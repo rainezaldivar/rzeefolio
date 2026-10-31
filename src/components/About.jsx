@@ -1,139 +1,36 @@
-import { motion } from "framer-motion";
-import { useTheme } from "../context/ThemeContext";
 import { techStack, designTools } from "../data/portfolioData";
 
-const ACCENT = "#e1704a";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
-
-const stagger = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
-};
-
 export default function About() {
-  const { isDark } = useTheme();
-
-  const text = isDark ? "text-[#f2efeb]" : "text-[#27272b]";
-  const muted = isDark ? "text-[#f2efeb]/60" : "text-[#27272b]/60";
-  const card = isDark
-    ? "bg-[#f2efeb]/5 border-[#f2efeb]/10"
-    : "bg-[#27272b]/5 border-[#27272b]/10";
-
   return (
-    <section id="about" className="py-24 px-6">
+    <section id="about" className="chapter-section about-section">
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={stagger}
-        >
-          {/* Section Heading — centered, single h2 "About Me" */}
-          <div className="text-center mb-12">
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl md:text-4xl font-bold uppercase"
-              style={{ color: ACCENT }}
-            >
-              About Me
-            </motion.h2>
+        <div className="chapter-heading">
+          <span className="chapter-index">01 / ABOUT</span>
+          <p className="eyebrow">A little about me</p>
+          <h2 className="heading-title">More than one way to make something.</h2>
+        </div>
+        <div className="about-editorial">
+          <div className="about-story">
+            <p className="about-lead">I study Information Technology at <strong>FEU Institute of Technology</strong>, specializing in Web and Mobile Applications.</p>
+            <p>My work sits between frontend development, interface design, and quality assurance. I care about how a product looks, how it feels to use, and whether it works for the people it serves.</p>
+            <p>Outside coursework, I co-founded <a href="#kuhaku">Kuhaku Media</a>, where I photograph and cover events in pop culture communities. I also make graphics and manage social content. Those experiences shape how I tell stories on screen.</p>
           </div>
-
-          {/* Bio — centered, larger text */}
-          <motion.div
-            variants={fadeUp}
-            className="max-w-3xl mx-auto text-center mb-14"
-          >
-            <p className={`text-lg leading-relaxed text-justify ${muted}`}>
-              I am an IT student currently studying at{" "}
-              <span className={`font-semibold ${text}`}>FEU Institute of Technology</span>,
-              specializing in{" "}
-              <span className={`font-semibold ${text}`}>Web and Mobile Applications</span>.
-              I also practice as a{" "}
-              <span className={`font-semibold ${text}`}>UI/UX designer</span>,{" "}
-              <span className={`font-semibold ${text}`}>frontend developer</span>, and{" "}
-              <span className={`font-semibold ${text}`}>QA tester</span>.
-              Focusing on the user-facing aspects of digital products, from crafting modern,
-              minimalist interfaces to conducting rigorous usability testing. While I am{" "}
-              <span className={`font-semibold ${text}`}>actively learning backend integration</span>,
-              my true forte is ensuring systems look beautiful and
-              function flawlessly. Outside of coursework, I co-founded{" "}
-              <span className={`font-semibold ${text}`}>Kuhaku Media</span>, a pop culture and
-              journalism organization, and I collaborate on academic systems, always aiming to
-              ship clean and accessible work. I am currently building my portfolio to prepare for
-              a full-time role in the IT industry upon graduation.
-            </p>
-          </motion.div>
-
-          {/* Tech Stack + Design Tools — centered, larger chips */}
-          <motion.div variants={fadeUp} className="max-w-3xl mx-auto">
-            <div className="mb-8">
-              <p className={`text-sm uppercase tracking-widest font-semibold mb-5 text-center ${muted}`}>
-                Tech Stack
-              </p>
-              <motion.div
-                variants={stagger}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                className="flex flex-wrap gap-3 justify-center"
-              >
-                {techStack.map((tech) => (
-                  <motion.span
-                    key={tech.name}
-                    variants={fadeUp}
-                    className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-md border text-base font-medium ${card} ${text} transition-all duration-200`}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = ACCENT;
-                      e.currentTarget.style.color = ACCENT;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "";
-                      e.currentTarget.style.color = "";
-                    }}
-                  >
-                    {tech.name}
-                  </motion.span>
-                ))}
-              </motion.div>
+          <aside className="about-notes" aria-label="Education and skills">
+            <div className="about-note" id="education">
+              <span className="note-label">Education</span>
+              <strong>FEU Institute of Technology</strong>
+              <span>Information Technology · Web and Mobile Applications</span>
             </div>
-
-            <div>
-              <p className={`text-sm uppercase tracking-widest font-semibold mb-5 text-center ${muted}`}>
-                Design Tools
-              </p>
-              <motion.div
-                variants={stagger}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                className="flex flex-wrap gap-3 justify-center"
-              >
-                {designTools.map((tool) => (
-                  <motion.span
-                    key={tool.name}
-                    variants={fadeUp}
-                    className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-md border text-base font-medium ${card} ${text} transition-all duration-200`}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = ACCENT;
-                      e.currentTarget.style.color = ACCENT;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "";
-                      e.currentTarget.style.color = "";
-                    }}
-                  >
-                    {tool.name}
-                  </motion.span>
-                ))}
-              </motion.div>
+            <div className="about-note" id="skills">
+              <span className="note-label">Tools I use</span>
+              <div className="about-tags">{techStack.map((tech) => <span key={tech.name}>{tech.name}</span>)}</div>
             </div>
-          </motion.div>
-        </motion.div>
+            <div className="about-note">
+              <span className="note-label">Design tools</span>
+              <div className="about-tags">{designTools.map((tool) => <span key={tool.name}>{tool.name}</span>)}</div>
+            </div>
+          </aside>
+        </div>
       </div>
     </section>
   );

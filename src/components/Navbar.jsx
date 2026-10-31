@@ -1,146 +1,53 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
-import { HiOutlineSun, HiOutlineMoon } from "react-icons/hi2";
+import { useEffect, useState } from "react";
+import { FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
 import { useTheme } from "../context/ThemeContext";
-
-const ACCENT = "#e1704a";
 
 const navLinks = [
   { label: "Home", href: "#home" },
-  { label: "Projects", href: "#works" },
   { label: "About", href: "#about" },
+  { label: "Projects", href: "#works" },
+  { label: "Credentials", href: "#certificates" },
+  { label: "School", href: "#school" },
+  { label: "Beyond IT", href: "#outside" },
   { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
   const { isDark, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("#home");
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const sections = navLinks.map(({ href }) => document.querySelector(href)).filter(Boolean);
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      if (visible[0]) setActive(`#${visible[0].target.id}`);
+    }, { rootMargin: "-20% 0px -65% 0px", threshold: 0 });
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
-
-  const handleNavClick = (href) => {
-    setMenuOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const bg = isDark ? "bg-[#27272b]" : "bg-[#f2efeb]";
-  const text = isDark ? "text-[#f2efeb]" : "text-[#27272b]";
-  const border = isDark ? "border-[#f2efeb]/10" : "border-[#27272b]/10";
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${bg} ${
-          scrolled ? `shadow-md border-b ${border}` : ""
-        }`}
-      >
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* Logo */}
-          <button
-            onClick={() => handleNavClick("#home")}
-            className={`text-base font-bold tracking-tight ${text} transition-colors duration-200`}
-            onMouseEnter={(e) => (e.currentTarget.style.color = ACCENT)}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "")}
-          >
-            Raine <span style={{ color: ACCENT }}>Zaldivar</span>
-          </button>
-
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <button
-                key={link.label}
-                onClick={() => handleNavClick(link.href)}
-                className={`text-sm font-medium ${text} transition-colors duration-200 relative group`}
-                onMouseEnter={(e) => (e.currentTarget.style.color = ACCENT)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "")}
-              >
-                {link.label}
-                <span
-                  className="absolute -bottom-1 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-300"
-                  style={{ backgroundColor: ACCENT }}
-                />
-              </button>
-            ))}
-
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className={`p-2 rounded-full border ${border} ${text} transition-all duration-200`}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = ACCENT;
-                e.currentTarget.style.borderColor = ACCENT;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "";
-                e.currentTarget.style.borderColor = "";
-              }}
-            >
-              {isDark ? <HiOutlineSun size={18} /> : <HiOutlineMoon size={18} />}
-            </button>
+      <nav className="site-nav-wrap" aria-label="Main navigation">
+        <div className="site-nav">
+          <a href="#home" className="nav-brand" onClick={() => setMenuOpen(false)}>Raine<span aria-hidden="true">✿</span></a>
+          <div className="nav-desktop">
+            {navLinks.map((link) => <a key={link.href} href={link.href} aria-current={active === link.href ? "location" : undefined} className="nav-link">{link.label}</a>)}
           </div>
-
-          {/* Mobile Controls */}
-          <div className="flex md:hidden items-center gap-3">
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className={`p-2 rounded-full border ${border} ${text} transition-all duration-200`}
-            >
-              {isDark ? <HiOutlineSun size={18} /> : <HiOutlineMoon size={18} />}
+          <div className="nav-actions">
+            <button type="button" onClick={toggleTheme} aria-label={isDark ? "Switch to day mode" : "Switch to night mode"} className="icon-button">
+              {isDark ? <FiSun size={18} /> : <FiMoon size={18} />}
             </button>
-            <button
-              onClick={() => setMenuOpen((prev) => !prev)}
-              aria-label="Toggle menu"
-              className={`p-2 ${text} transition-colors duration-200`}
-            >
-              {menuOpen ? <HiOutlineX size={24} /> : <HiOutlineMenu size={24} />}
+            <button type="button" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" className="icon-button nav-menu-toggle">
+              {menuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
             </button>
           </div>
         </div>
-      </motion.nav>
-
-      {/* Mobile Drawer */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className={`fixed top-[65px] left-0 right-0 z-40 ${bg} border-b ${border} shadow-lg md:hidden`}
-          >
-            <div className="px-6 py-6 flex flex-col gap-5">
-              {navLinks.map((link, i) => (
-                <motion.button
-                  key={link.label}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.06, duration: 0.2 }}
-                  onClick={() => handleNavClick(link.href)}
-                  className={`text-left text-base font-medium ${text} transition-colors duration-200`}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = ACCENT)}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "")}
-                >
-                  {link.label}
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </nav>
+      {menuOpen && <nav id="mobile-navigation" className="mobile-menu" aria-label="Mobile navigation">
+        {navLinks.map((link) => <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)} aria-current={active === link.href ? "location" : undefined} className="nav-link">{link.label}</a>)}
+      </nav>}
     </>
   );
 }

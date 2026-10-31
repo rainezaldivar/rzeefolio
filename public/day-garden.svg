@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" fill="none" aria-hidden="true">
+  <defs>
+    <g id="cloud" fill="#fffdf8" stroke="#d5cce4" stroke-width="3" stroke-linejoin="round">
+      <path d="M0 39c11-18 31-21 49-14C60 6 93 5 108 23c21-8 44 1 48 20 18-1 29 11 29 25H0c-9-11-8-21 0-29Z"/>
+    </g>
+    <g id="blossom" stroke="#c47794" stroke-width="2.5" stroke-linejoin="round">
+      <path fill="#ffe4ee" d="M0-9c-14-18-25-5-16 5-18-2-20 15-5 18-5 16 11 23 20 9 10 14 26 7 20-9 16-3 13-20-5-18C24-14 13-27 0-9Z"/>
+      <circle r="5" fill="#fff5c8" stroke="none"/>
+    </g>
+    <g id="leaf" fill="#a8d9ae" stroke="#7b9f8e" stroke-width="2.5">
+      <path d="M0 0c16-29 43-21 44 0-2 19-27 27-44 0Z"/>
+    </g>
+  </defs>
+
+  <use href="#cloud" x="106" y="80" opacity=".95"/>
+  <use href="#cloud" x="425" y="32" transform="translate(425 32) scale(.65) translate(-425 -32)" opacity=".92"/>
+  <use href="#cloud" x="866" y="95" opacity=".88"/>
+  <use href="#cloud" x="1042" y="225" transform="translate(1042 225) scale(.5) translate(-1042 -225)" opacity=".78"/>
+
+  <path d="M164 536c75-68 116-177 181-183 72-8 112 133 176 170 28-63 97-161 142-178 53-20 106 104 166 182 77-114 127-174 184-161 64 14 104 112 158 170H164Z" fill="#dbe3f2" stroke="#a9adce" stroke-width="4"/>
+  <path d="m275 433 69-78 72 88-49-28-23 19-23-19-46 18Zm323-31 65-57 55 62-39-22-16 16-23-15-42 16Zm334 18 81-55 72 69-48-20-26 18-29-16-50 4Z" fill="#fffaf8" stroke="#c7c5e3" stroke-width="3"/>
+  <path d="M0 540c175-77 325-20 463 42 165-77 276-70 405-15 142-73 249-80 332-39v192H0V540Z" fill="#b4dfbd" stroke="#85b5a1" stroke-width="4"/>
+  <path d="M0 617c169-37 261-19 389 30 170-58 304-41 447 12 147-51 244-54 364-23v84H0V617Z" fill="#8dcdb7" stroke="#76b3a6" stroke-width="4"/>
+  <path d="M415 720c123-73 241-76 372 0H415Z" fill="#aedff0" stroke="#72b3cf" stroke-width="4"/>
+  <path d="M480 700c92-26 172-22 260 1" stroke="#f8fffb" stroke-width="5" stroke-linecap="round" opacity=".72"/>
+
+  <path d="M-10-3C72 61 109 127 152 231M17 67c24-17 57-28 101-35M65 147c41 7 75-1 105-26M119 203c-35 1-62 17-86 35" stroke="#8b6679" stroke-width="14" stroke-linecap="round"/>
+  <path d="M1206-8c-79 64-124 139-154 240M1158 88c-35-15-75-13-111-1m81 70c42 5 66 24 87 42m-137 13c-28-11-64-6-96 11" stroke="#8b6679" stroke-width="14" stroke-linecap="round"/>
+  <g fill="#f8c9d9" stroke="#c9859d" stroke-width="3">
+    <circle cx="32" cy="25" r="51"/><circle cx="89" cy="60" r="62"/><circle cx="-14" cy="117" r="62"/><circle cx="96" cy="153" r="43"/><circle cx="48" cy="214" r="53"/>
+    <circle cx="1163" cy="24" r="63"/><circle cx="1097" cy="58" r="57"/><circle cx="1221" cy="117" r="68"/><circle cx="1108" cy="161" r="47"/><circle cx="1164" cy="208" r="58"/>
+  </g>
+  <g opacity=".92">
+    <use href="#blossom" x="155" y="230" transform="rotate(18 155 230)"/>
+    <use href="#blossom" x="217" y="138" transform="rotate(-12 217 138) scale(.7) translate(93 59)"/>
+    <use href="#blossom" x="1024" y="235" transform="rotate(-20 1024 235)"/>
+    <use href="#blossom" x="941" y="145" transform="rotate(18 941 145) scale(.7) translate(403 62)"/>
+    <use href="#blossom" x="336" y="247" transform="rotate(18 336 247) scale(.43) translate(445 328)"/>
+    <use href="#blossom" x="839" y="292" transform="rotate(-15 839 292) scale(.4) translate(1259 438)"/>
+  </g>
+
+  <g fill="#9ccfa9" stroke="#6f9e90" stroke-width="3">
+    <path d="M0 720V570c26-34 64-34 86 0 20-45 65-51 93-7 22-24 57-23 76 7 20-16 58-11 64 24 35-14 66 11 66 46v80H0Z"/>
+    <path d="M822 720v-88c22-42 65-46 91-13 15-38 61-46 84-13 28-31 76-20 90 17 39-22 83 5 83 47 20-18 42-15 50 0v50H822Z"/>
+  </g>
+  <path d="M0 676c124-24 228-18 365 29m465 4c130-31 256-28 370-2" stroke="#d8efd3" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+  <g opacity=".92">
+    <use href="#blossom" x="76" y="615" transform="scale(.7) translate(33 264)"/>
+    <use href="#blossom" x="250" y="667" transform="scale(.54) translate(213 568)"/>
+    <use href="#blossom" x="1088" y="613" transform="scale(.65) translate(585 330)"/>
+    <use href="#blossom" x="938" y="688" transform="scale(.5) translate(938 688)"/>
+  </g>
+</svg>
