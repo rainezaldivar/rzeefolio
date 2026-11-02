@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import defaultCursor from "../assets/cursor-previews/cursor-default.png";
 import hoverCursor from "../assets/cursor-previews/cursor-hover.png";
 
@@ -6,14 +7,15 @@ const interactiveSelector = 'a, button, [role="button"], input:not([type="hidden
 
 export default function CustomCursor() {
   const cursorRef = useRef(null);
+  const lastPosition = useRef({ x: -100, y: -100 });
   const [enabled, setEnabled] = useState(false);
   const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [portalTarget, setPortalTarget] = useState(null);
 
   useEffect(() => {
     const media = window.matchMedia("(hover: hover) and (pointer: fine)");
     let active = true;
-
     const update = () => {
       if (!media.matches) {
         setEnabled(false);
@@ -29,7 +31,6 @@ export default function CustomCursor() {
         if (active && media.matches) setEnabled(true);
       }).catch(() => { if (active) setEnabled(false); });
     };
-
     update();
     media.addEventListener("change", update);
     return () => {
@@ -41,11 +42,22 @@ export default function CustomCursor() {
   useEffect(() => {
     if (!enabled) return;
 
+    const syncTarget = () => setPortalTarget(document.querySelector("dialog[open]") ?? document.body);
+    syncTarget();
+    const observer = new MutationObserver(syncTarget);
+    observer.observe(document.body, { attributes: true, attributeFilter: ["open"], subtree: true });
+    return () => observer.disconnect();
+  }, [enabled]);
+
+  useEffect(() => {
+    if (!enabled) return;
+
     document.documentElement.classList.add("custom-cursor-enabled");
     const move = (event) => {
       if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+      lastPosition.current = { x: event.clientX, y: event.clientY };
       if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+        cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
       }
       setHovered(Boolean(event.target instanceof Element && event.target.closest(interactiveSelector)));
       setVisible(true);
@@ -66,11 +78,19 @@ export default function CustomCursor() {
     };
   }, [enabled]);
 
+  useEffect(() => {
+    if (cursorRef.current) {
+      const { x, y } = lastPosition.current;
+      cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+    }
+  }, [portalTarget]);
+
   if (!enabled) return null;
 
-  return (
+  return createPortal(
     <div ref={cursorRef} className={`custom-cursor ${visible ? "is-visible" : ""} ${hovered ? "is-hovered" : ""}`} aria-hidden="true">
       <img src={hovered ? hoverCursor : defaultCursor} alt="" draggable="false" />
-    </div>
+    </div>,
+    portalTarget ?? document.body,
   );
 }

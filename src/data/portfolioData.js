@@ -11,7 +11,9 @@ export const projects = [
     description:
       "A charity website for the Alban Memorial Foundation that empowers disadvantaged Filipino families through wellness and livelihood programs. Focused on total human development, it provides educational support and financial aid to help marginalized sectors achieve self-sufficiency.",
     role: "Front-End Development",
-    tech: ["PHP", "Tailwind CSS", "HTML", "JavaScript"],
+    kind: "Nonprofit website",
+    platform: "Web application",
+    tech: ["Tailwind CSS", "HTML", "JavaScript"],
     status: "completed",
     liveUrl: "https://albanmemorial.onrender.com/",
     image: albanImg,
@@ -22,6 +24,8 @@ export const projects = [
     description:
       "A Pokémon GO inspired web store built as a final project. This reimagines the official storefront with a cleaner, more modern UI. Focusing on making the user experience smoother for browsing in-game items, collections, and special events.",
     role: "Front-End Developer",
+    kind: "Fan-made storefront",
+    platform: "Web application",
     tech: ["HTML", "CSS", "JavaScript"],
     status: "completed",
     liveUrl: "https://4eyesfeutech.github.io/FINAL-PROJECT-FOR-IT0063/",
@@ -33,10 +37,20 @@ export const projects = [
     description:
       "Originally built as a third-year CodeIgniter class final project, Smiskisite is a fan-made storefront for Smiski collectors. Refurbished with Next.js, it lets visitors browse collections and search and filter products.",
     role: "Full-Stack Development",
+    kind: "Collector storefront",
+    platform: "Web application",
     tech: ["Next.js", "React", "Tailwind CSS", "Supabase"],
     status: "in-progress",
     liveUrl: "https://smiskisite.vercel.app/",
     image: smiskisiteImg,
+  },
+  {
+    id: "thesis",
+    title: "Thesis project",
+    kind: "Project details to be added",
+    platform: "Platform to be added",
+    tech: [],
+    private: true,
   },
 ];
 
@@ -81,16 +95,32 @@ export const techStack = [
   { name: "CSS" },
   { name: "JavaScript" },
   { name: "Python" },
-  { name: "PHP" },
   { name: "Laravel" },
   { name: "Tailwind CSS" },
   { name: "MySQL" },
   { name: "React" },
+  { name: "Next.js" },
+  { name: "CodeIgniter" },
+  { name: "Supabase" },
   { name: "Microsoft Azure" },
+  { name: "Bootstrap" },
+  { name: "C++" },
+  { name: "Git" },
+  { name: "GitHub" },
+  { name: "VS Code" },
+  { name: "Antigravity" },
+  { name: "Vite" },
 ];
 
 export const designTools = [
   { name: "Figma" },
   { name: "Photoshop" },
   { name: "Canva" },
+];
+
+export const techGroups = [
+  { name: "Frontend", tools: ["HTML", "CSS", "JavaScript", "Bootstrap", "Tailwind CSS", "React", "Next.js"] },
+  { name: "Backend", tools: ["Laravel", "CodeIgniter", "MySQL", "Supabase"] },
+  { name: "Development & Collaboration", tools: ["Python", "C++", "Vite", "Git", "GitHub", "VS Code", "Antigravity", "Microsoft Azure"] },
+  { name: "Design", tools: ["Figma", "Photoshop", "Canva"] },
 ];

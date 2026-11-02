@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Nunito", sans-serif;
+  --font-sans: "Montserrat", sans-serif;
 }
 
 :root {
@@ -46,7 +46,7 @@
     margin: 0;
     background: var(--bg);
     color: var(--ink);
-    font-family: "Nunito", sans-serif;
+    font-family: "Montserrat", sans-serif;
     transition: background-color .3s ease, color .3s ease;
   }
   * { box-sizing: border-box; }
@@ -81,12 +81,12 @@
 
 section[id], #education, #skills { scroll-margin-top: 5.5rem; }
 
-.display-font { font-family: "Fredoka", "Nunito", sans-serif; }
+.display-font { font-family: "Montserrat", sans-serif; }
 .ink { color: var(--ink); }
 .muted { color: var(--muted); }
 .accent-text { color: var(--accent-strong); }
 .heading-title {
-  font-family: "Fredoka", "Nunito", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 600;
   letter-spacing: -.035em;
@@ -226,7 +226,7 @@ section[id], #education, #skills { scroll-margin-top: 5.5rem; }
   height: 3.5rem;
   opacity: 0;
   pointer-events: none;
-  transform: translate3d(-100px, -100px, 0);
+  transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
   will-change: transform;
   transition: opacity .12s ease, width .16s ease, height .16s ease;
 }
@@ -237,7 +237,7 @@ section[id], #education, #skills { scroll-margin-top: 5.5rem; }
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transform: translate(-12%, -12%);
+  transform: none;
   filter: drop-shadow(0 2px 3px rgba(9, 27, 68, .45));
 }
 
@@ -427,7 +427,7 @@ section[id], #education, #skills { scroll-margin-top: 5.5rem; }
   border-radius: 999px;
   background: #ffd8dd;
   color: #28365b;
-  font-family: "Fredoka", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 1.05rem;
   transform: rotate(-8deg);
   box-shadow: 0 4px 0 var(--shadow);

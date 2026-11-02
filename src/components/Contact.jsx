@@ -1,31 +1,39 @@
-import { FiArrowDown, FiArrowUpRight, FiGithub, FiLinkedin, FiFacebook, FiInstagram, FiMail } from "react-icons/fi";
+import { FiArrowDown, FiArrowUpRight } from "react-icons/fi";
 
-const socials = [
-  { href: "https://github.com/rainezaldivar", label: "GitHub", icon: <FiGithub size={19} /> },
-  { href: "https://www.linkedin.com/in/rainezaldivar", label: "LinkedIn", icon: <FiLinkedin size={19} /> },
-  { href: "https://www.facebook.com/RaineeZzz", label: "Facebook", icon: <FiFacebook size={19} /> },
-  { href: "https://www.instagram.com/rzeeecola", label: "Instagram", icon: <FiInstagram size={19} /> },
+const contactLinks = [
+  { label: "Email", detail: "zaldivarraine17@gmail.com", href: "mailto:zaldivarraine17@gmail.com" },
+  { label: "Instagram", detail: "@rzeeecola", href: "https://www.instagram.com/rzeeecola", external: true },
+  { label: "Facebook", detail: "Raine Zaldivar", href: "https://www.facebook.com/RaineeZzz", external: true },
+  { label: "GitHub", detail: "rainezaldivar", href: "https://github.com/rainezaldivar", external: true },
+  { label: "LinkedIn", detail: "Raine Zaldivar", href: "https://www.linkedin.com/in/rainezaldivar", external: true },
 ];
 
 export default function Contact() {
   return (
     <footer id="contact" className="contact-section contact-editorial">
-      <div className="max-w-6xl mx-auto">
-        <p className="eyebrow">Let's talk</p>
-        <div className="contact-layout">
-          <div>
-            <h2 className="heading-title mt-3">Have a story or a project in mind?</h2>
+      <div className="projects-container mx-auto contact-content">
+        <div className="chapter-heading reveal"><h2 className="heading-title">Let's talk</h2></div>
+        <div className="contact-layout reveal">
+          <div className="contact-message">
+            <h3 className="contact-question">Have a story or a project in mind?</h3>
             <p className="muted mt-5 max-w-xl text-lg leading-relaxed">I'm open to collaborations and conversations about development, photography, and creative work.</p>
           </div>
-          <div className="contact-actions">
-            <a href="mailto:zaldivarraine17@gmail.com">Send an email <FiArrowUpRight size={20} /></a>
-            <a href="/RaineCV.pdf" download="Raine_Zaldivar_CV.pdf">Download CV <FiArrowDown size={20} /></a>
+          <div id="socials" className="contact-actions" aria-label="Contact links">
+            {contactLinks.map(({ label, detail, href, external }) => (
+              <a key={label} href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                <span><strong>{label}</strong><small>{detail}</small></span>
+                <FiArrowUpRight size={20} aria-hidden="true" />
+              </a>
+            ))}
+            <a href="/RaineCV.pdf" download="Raine_Zaldivar_CV.pdf">
+              <span><strong>Download CV</strong></span><FiArrowDown size={20} aria-hidden="true" />
+            </a>
           </div>
         </div>
-        <div className="contact-bottom">
-          <span>Raine Zaldivar <span aria-hidden="true">✿</span></span>
-          <div className="contact-socials">{socials.map(({ href, label, icon }) => <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>{icon}</a>)}</div>
-          <small>© {new Date().getFullYear()} Raine Zaldivar</small>
+        <div className="contact-bottom reveal">
+          <span>Raine Zaldivar <span aria-hidden="true">&#10047;</span></span>
+          <a className="contact-back" href="#home">Back to top <FiArrowUpRight size={17} aria-hidden="true" /></a>
+          <small>&copy; {new Date().getFullYear()} Raine Zaldivar</small>
         </div>
       </div>
     </footer>
