@@ -13,21 +13,21 @@ function ProjectTechnologies({ tech, className = "" }) {
 function ProjectCardContent({ project, onInfo }) {
   return (
     <>
-      <div className="project-card-image">
+      <button type="button" className="project-card-image" onClick={() => onInfo(project)} aria-label={`View information about ${project.title}`}>
         {project.image ? (
           <img src={project.image} alt={`${project.title} website preview`} loading="lazy" />
         ) : (
-          <div className="project-placeholder"><FiImage size={30} /><span>Screenshots coming soon</span></div>
+          <div className="project-placeholder"><FiImage size={30} aria-hidden="true" /><span>Screenshots coming soon</span></div>
         )}
-        <div className="project-image-overlay">
-          <button type="button" className="project-overlay-action" onClick={() => onInfo(project)} aria-label={`View information about ${project.title}`}>View Info</button>
-          {project.liveUrl && <a className="project-overlay-action" href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`View ${project.title} live website (opens in a new tab)`}>View Live <FiArrowUpRight size={16} aria-hidden="true" /></a>}
-        </div>
-      </div>
+      </button>
       <div className="project-card-body">
-        <h3>{project.title}</h3>
+        <h3><button type="button" className="project-card-title" onClick={() => onInfo(project)}>{project.title}</button></h3>
         <p className="project-card-meta">{project.kind} <span aria-hidden="true">·</span> {project.platform}</p>
         <ProjectTechnologies tech={project.tech} className="project-card-technologies" />
+        <div className="project-card-actions">
+          <button type="button" onClick={() => onInfo(project)}>View details</button>
+          {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} website (opens in a new tab)`}>Visit site <FiArrowUpRight size={16} aria-hidden="true" /></a>}
+        </div>
       </div>
     </>
   );
@@ -90,9 +90,9 @@ export default function Works() {
   };
 
   return (
-    <section id="works" className="chapter-section works-section">
+    <section id="works" className="chapter-section works-section" aria-labelledby="works-heading">
       <div className="projects-container mx-auto">
-        <div className="chapter-heading reveal"><h2 className="heading-title">My Projects</h2></div>
+        <div className="chapter-heading reveal"><h2 id="works-heading" className="heading-title">My Projects</h2></div>
         <div className="project-grid">
           {projects.map((project) => (
             <article className="project-card reveal" key={project.id}>

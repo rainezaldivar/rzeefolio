@@ -8,7 +8,7 @@ $qualityEncoder = [System.Drawing.Imaging.Encoder]::Quality
 $jpegCodec = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object MimeType -eq 'image/jpeg' | Select-Object -First 1
 
 Get-ChildItem -LiteralPath $assetDirectory -File | Where-Object {
-  $_.Name -match '^(kuhaku|innov|feutech|arta)-\d+\.jpg$'
+  $_.Name -match '^kuhaku-\d+\.jpg$'
 } | ForEach-Object {
   $destination = Join-Path $outputDirectory $_.Name
   if ($_.Length -le 700KB) {
@@ -66,21 +66,7 @@ Get-ChildItem -LiteralPath $assetDirectory -File | Where-Object Name -Match '^cu
   } finally { $source.Dispose() }
 }
 
-$artworkFiles = @(
-  'creative\ARTWAKENING PFP.png',
-  'creative\DAY 1 WINNERS FRONT LAYOUT.png',
-  'creative\DAY 2 WINNERS FRONT LAYOUT.png',
-  'creative\TRIVIAS\ANILAG.png',
-  'creative\TRIVIAS\ATI-ATIHAN.png',
-  'creative\TRIVIAS\IBON-EBUN.png',
-  'creative\TRIVIAS\KADAYAWAN.png',
-  'creative\TRIVIAS\MASSKARA.png',
-  'creative\TRIVIAS\PANAGBENGA.png',
-  'creative\TRIVIAS\PISTA_Y DAYAT.png',
-  'creative\TRIVIAS\SINULOG.png'
-)
 $previewSets = @(
-  @{ Directory = 'creative-previews'; Files = $artworkFiles; MaxWidth = 900 },
   @{ Directory = 'project-previews'; Files = @('alban.png', 'pokemon.png'); MaxWidth = 1500 }
 )
 

@@ -7,7 +7,7 @@ import Works from "./components/Works";
 import Certificates from "./components/Certificates";
 import Contact from "./components/Contact";
 import CustomCursor from "./components/CustomCursor";
-import GardenScene from "./components/GardenScene";
+import SakuraPetals from "./components/SakuraPetals";
 
 export default function App() {
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function App() {
   return (
     <>
       <div className="site-shell">
-        <GardenScene />
+        <SakuraPetals />
         <a className="skip-link" href="#main-content">Skip to main content</a>
         <Navbar />
         <main id="main-content" tabIndex={-1}>

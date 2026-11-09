@@ -1,4 +1,4 @@
-import rainePhoto from "../assets/raine-original-photo.png";
+import rainePhoto from "../assets/raine-portrait.png";
 import antigravityLogo from "../assets/antigravity-icon.svg";
 import {
   SiBootstrap, SiCanva, SiCodeigniter, SiCplusplus, SiCss, SiFigma,
@@ -77,10 +77,10 @@ function SakuraSprig() {
 
 export default function About() {
   return (
-    <section id="about" className="chapter-section about-section">
+    <section id="about" className="chapter-section about-section" aria-labelledby="about-heading">
       <div className="max-w-6xl mx-auto about-content">
         <div className="chapter-heading reveal">
-          <h2 className="heading-title">About me</h2>
+          <h2 id="about-heading" className="heading-title">About me</h2>
         </div>
         <div className="about-intro-grid">
           <div className="about-story reveal">
@@ -88,7 +88,7 @@ export default function About() {
             <p>Through academic projects, client work, and student leadership, I’ve gained hands-on experience in <strong>system design, software testing, and project coordination</strong>. I enjoy collaborating with teammates and turning small details into better experiences. Outside of tech, I co-founded <a href="https://www.facebook.com/Kuhakumedia" target="_blank" rel="noopener noreferrer"><strong>Kuhaku Media</strong></a>, where we cover pop culture events, which has sharpened my eye for visual detail.</p>
           </div>
           <figure className="about-portrait reveal">
-            <img src={rainePhoto} alt="Portrait of Raine Zaldivar" loading="lazy" />
+            <img src={rainePhoto} alt="Portrait of Raine Zaldivar" width="1200" height="1800" loading="lazy" decoding="async" />
           </figure>
         </div>
         <div className="about-field-notes reveal">

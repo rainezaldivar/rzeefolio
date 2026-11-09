@@ -14,7 +14,7 @@ export default function CustomCursor() {
   const [portalTarget, setPortalTarget] = useState(null);
 
   useEffect(() => {
-    const media = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const media = window.matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
     let active = true;
     const update = () => {
       if (!media.matches) {

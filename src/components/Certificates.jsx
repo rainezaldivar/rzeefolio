@@ -2,9 +2,9 @@
 
 export default function Certificates() {
   return (
-    <section id="certificates" className="chapter-section certificates-section">
+    <section id="certificates" className="chapter-section certificates-section" aria-labelledby="certificates-heading">
       <div className="max-w-6xl mx-auto">
-        <div className="chapter-heading reveal"><h2 className="heading-title">Certifications & Badges</h2></div>
+        <div className="chapter-heading reveal"><h2 id="certificates-heading" className="heading-title">Certifications & Badges</h2></div>
         <div className="credentials-columns">
           <div className="credentials-column reveal">
             <h3>Certifications</h3>

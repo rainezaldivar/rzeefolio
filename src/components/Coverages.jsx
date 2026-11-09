@@ -1,10 +1,9 @@
 ﻿import { useState } from "react";
 import { FiChevronLeft, FiChevronRight, FiInfo, FiZoomIn, FiZoomOut } from "react-icons/fi";
 import { eventCoverages } from "../data/portfolioData";
-import socialPosts from "../data/socialPosts.json";
 import cameraMascot from "../assets/coverage-camera.png";
 
-const previewImages = import.meta.glob("../assets/coverage-previews/*.*", { eager: true, query: "?url", import: "default" });
+const previewImages = import.meta.glob("../assets/coverage-previews/kuhaku-*.jpg", { eager: true, query: "?url", import: "default" });
 
 const kuhakuPosts = eventCoverages.map((coverage) => ({
   ...coverage,
@@ -14,13 +13,9 @@ const kuhakuPosts = eventCoverages.map((coverage) => ({
   previewFile: `kuhaku-${coverage.id}.jpg`,
 }));
 
-const publicationPosts = socialPosts.filter((post) =>
-  post.source !== "creative" || post.category === "ARTwakening campaign"
-);
-
-const featuredOrder = ["kuhaku-21", "19LrwwrkTr", "1GE9BnN6F5", "19VxMhpBGf", "1AFbP7vYEV"];
+const featuredOrder = ["kuhaku-21"];
 const featuredRank = new Map(featuredOrder.map((id, index) => [id, index]));
-const allEvents = [...kuhakuPosts, ...publicationPosts].sort((a, b) =>
+const allEvents = kuhakuPosts.sort((a, b) =>
   (featuredRank.get(a.id) ?? featuredOrder.length) - (featuredRank.get(b.id) ?? featuredOrder.length)
 );
 
@@ -49,8 +44,9 @@ export default function Coverages() {
       <div>
         <div className="coverage-heading mb-10">
           <div className="coverage-heading-copy">
-            <h2 className="heading-title">Beyond IT <span className="coverage-heading-flower" aria-hidden="true">✿</span></h2>
+            <h2 id="outside-heading" className="heading-title">Outside the scope of coursework <span className="coverage-heading-flower" aria-hidden="true">✿</span></h2>
             <p className="muted mt-4 max-w-2xl">I co-founded Kuhaku Media to photograph events and share stories from pop culture communities. Use the camera controls to browse, then select the screen for the full coverage.</p>
+            <a className="kuhaku-facebook" href="https://www.facebook.com/Kuhakumedia" target="_blank" rel="noopener noreferrer">Kuhaku on Facebook</a>
           </div>
           <img src={cameraMascot} alt="" aria-hidden="true" className="coverage-mascot" />
         </div>
@@ -88,7 +84,7 @@ export default function Coverages() {
                 </button>
               </div>
               <div className="coverage-camera-bottom-controls" role="group" aria-label="Camera screen controls">
-                <button type="button" onClick={() => setShowInfo((visible) => !visible)} aria-pressed={showInfo} aria-label="Show photo information" title="Photo information"><FiInfo size={17} aria-hidden="true" /></button>
+                <button type="button" onClick={() => setShowInfo((visible) => !visible)} aria-pressed={showInfo} aria-label={showInfo ? "Hide photo information" : "Show photo information"} title={showInfo ? "Hide photo information" : "Show photo information"}><FiInfo size={17} aria-hidden="true" /></button>
                 <button type="button" onClick={() => setZoomed((value) => !value)} aria-pressed={zoomed} aria-label={zoomed ? "Fit photo to screen" : "Zoom photo to fill screen"} title={zoomed ? "Fit photo" : "Zoom photo"}>{zoomed ? <FiZoomOut size={17} aria-hidden="true" /> : <FiZoomIn size={17} aria-hidden="true" />}</button>
               </div>
             </div>

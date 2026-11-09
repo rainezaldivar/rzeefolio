@@ -7,6 +7,7 @@ const navLinks = [
   { label: "About", href: "#about" },
   { label: "Projects", href: "#works" },
   { label: "Credentials", href: "#certificates" },
+  { label: "Outside", href: "#outside" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -94,15 +95,15 @@ export default function Navbar() {
           </div>
           <div className="nav-mobile-actions">
             <ThemeSwitch />
-            <button ref={menuButton} type="button" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls={menuOpen ? "mobile-navigation" : undefined} className="icon-button">
+            <button ref={menuButton} type="button" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" className="icon-button">
               {menuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
             </button>
           </div>
         </div>
       </nav>
-      {menuOpen && <nav id="mobile-navigation" className="mobile-menu" aria-label="Mobile navigation">
+      <nav id="mobile-navigation" className="mobile-menu" aria-label="Mobile navigation" hidden={!menuOpen}>
         {navLinks.map((link) => <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className="nav-link" aria-current={activeHref === link.href ? "location" : undefined}>{link.label}</a>)}
-      </nav>}
+      </nav>
     </>
   );
 }
