@@ -1,96 +1,211 @@
-﻿import { useState } from "react";
-import { FiChevronLeft, FiChevronRight, FiInfo, FiZoomIn, FiZoomOut } from "react-icons/fi";
+import { useEffect, useRef, useState } from "react";
+import { FiArrowUpRight, FiChevronLeft, FiChevronRight, FiInfo, FiX, FiZoomIn } from "react-icons/fi";
 import { eventCoverages } from "../data/portfolioData";
 import cameraMascot from "../assets/coverage-camera.png";
+import SakuraLogo from "./SakuraLogo";
 
-const previewImages = import.meta.glob("../assets/coverage-previews/kuhaku-*.jpg", { eager: true, query: "?url", import: "default" });
+const previewImages = import.meta.glob("../assets/coverage-previews/{innov,feutech,kuhaku,arta}-*.jpg", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+const fullImages = import.meta.glob("../assets/{innov,feutech,kuhaku}-*.jpg", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
 
-const kuhakuPosts = eventCoverages.map((coverage) => ({
-  ...coverage,
-  id: `kuhaku-${coverage.id}`,
-  source: "kuhaku",
-  category: `Kuhaku Media · ${coverage.category}`,
-  previewFile: `kuhaku-${coverage.id}.jpg`,
+const imageFor = (file) => previewImages[`../assets/coverage-previews/${file}`];
+const fullImageFor = (file) => fullImages[`../assets/${file}`] ?? imageFor(file);
+const kuhakuFacebookUrl = "https://www.facebook.com/Kuhakumedia";
+
+// These photographs carry The Innovator's credit in the supplied image files.
+const innovatorPhotos = [
+  ...Array.from({ length: 18 }, (_, index) => `innov-${index + 1}.jpg`),
+  "feutech-1.jpg",
+  "feutech-2.jpg",
+].map((file, index) => ({
+  id: `innovator-${index + 1}`,
+  source: "The Innovator",
+  label: `Photograph ${String(index + 1).padStart(2, "0")}`,
+  image: imageFor(file),
+  fullImage: fullImageFor(file),
 }));
 
-const featuredOrder = ["kuhaku-21"];
-const featuredRank = new Map(featuredOrder.map((id, index) => [id, index]));
-const allEvents = kuhakuPosts.sort((a, b) =>
-  (featuredRank.get(a.id) ?? featuredOrder.length) - (featuredRank.get(b.id) ?? featuredOrder.length)
-);
+const kuhakuPhotos = eventCoverages.map((coverage) => ({
+  id: `kuhaku-${coverage.id}`,
+  source: "Kuhaku Media",
+  sourceUrl: kuhakuFacebookUrl,
+  label: coverage.title,
+  description: coverage.description,
+  category: coverage.category,
+  url: coverage.url,
+  image: imageFor(`kuhaku-${coverage.id}.jpg`),
+  fullImage: fullImageFor(`kuhaku-${coverage.id}.jpg`),
+}));
+
+const additionalKuhakuPhoto = {
+  id: "kuhaku-3",
+  source: "Kuhaku Media",
+  sourceUrl: kuhakuFacebookUrl,
+  label: "Photograph 03",
+  image: imageFor("kuhaku-3.jpg"),
+  fullImage: fullImageFor("kuhaku-3.jpg"),
+};
+const orderedKuhakuPhotos = [kuhakuPhotos[0], additionalKuhakuPhoto, ...kuhakuPhotos.slice(1)];
+const uncataloguedPhotos = ["arta-1.jpg", "arta-2.jpg"].map((file, index) => ({
+  id: `uncatalogued-${index + 1}`,
+  label: `Photograph ${37 + index}`,
+  image: imageFor(file),
+  fullImage: fullImageFor(file),
+}));
+
+// Keep the familiar featured frame first, then browse every source in one sequence.
+const photoSequence = Array.from({ length: Math.max(innovatorPhotos.length, orderedKuhakuPhotos.length) }, (_, index) => [
+  innovatorPhotos[index],
+  orderedKuhakuPhotos[index],
+]).flat().concat(uncataloguedPhotos).filter((photo) => photo?.image);
+const featuredPhoto = photoSequence.find((photo) => photo.id === "kuhaku-21");
+const allPhotos = [featuredPhoto, ...photoSequence.filter((photo) => photo.id !== "kuhaku-21")].filter(Boolean);
 
 export default function Coverages() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [cameraIndex, setCameraIndex] = useState(0);
   const [showInfo, setShowInfo] = useState(false);
-  const [zoomed, setZoomed] = useState(false);
-  const activeEvent = allEvents[activeIndex];
-  const activeImage = previewImages[`../assets/coverage-previews/${activeEvent.previewFile}`];
-  const position = String(activeIndex + 1).padStart(2, "0");
-  const total = String(allEvents.length).padStart(2, "0");
+  const [zoomOpen, setZoomOpen] = useState(false);
+  const dialogRef = useRef(null);
+  const triggerRef = useRef(null);
+  const cameraPhoto = allPhotos[cameraIndex];
+  const photoCredit = cameraPhoto.source ? ` from ${cameraPhoto.source}` : "";
+  const position = String(cameraIndex + 1).padStart(2, "0");
+  const total = String(allPhotos.length).padStart(2, "0");
 
-  const move = (direction) => {
-    setActiveIndex((current) => (current + direction + allEvents.length) % allEvents.length);
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (zoomOpen && !dialog.open) dialog.showModal();
+    if (!zoomOpen && dialog.open) dialog.close();
+  }, [zoomOpen]);
+
+  const openZoom = (trigger) => {
+    triggerRef.current = trigger;
+    setZoomOpen(true);
   };
 
-  const handleKeyDown = (event) => {
+  const moveCamera = (direction) => {
+    setCameraIndex((current) => (current + direction + allPhotos.length) % allPhotos.length);
+  };
+
+  const handleCameraKeyDown = (event) => {
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       event.preventDefault();
-      move(event.key === "ArrowLeft" ? -1 : 1);
+      moveCamera(event.key === "ArrowLeft" ? -1 : 1);
     }
   };
 
+  const handleDialogKeyDown = (event) => {
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
+      moveCamera(event.key === "ArrowLeft" ? -1 : 1);
+    }
+  };
+
+  const handleDialogClose = () => {
+    setZoomOpen(false);
+    triggerRef.current?.focus();
+  };
+
+  const lcdContent = (
+    <>
+      <span className="coverage-camera-photo" key={cameraPhoto.id}>
+        <img src={cameraPhoto.image} alt="" className="coverage-camera-photo-main" />
+      </span>
+      <span className="coverage-camera-screen-top" aria-hidden="true">{position} / {total}</span>
+      {cameraPhoto.url && <span className="photography-camera-open-hint" aria-hidden="true">Open original <FiArrowUpRight size={14} /></span>}
+      <span className="photography-camera-screen-label">
+        {cameraPhoto.source && <small>{cameraPhoto.source}</small>}
+        <strong>{cameraPhoto.label}</strong>
+        {cameraPhoto.description && <span className="photography-camera-screen-caption">{cameraPhoto.description}</span>}
+      </span>
+    </>
+  );
+
   return (
-    <div id="coverages" className="coverages-panel reveal">
-      <div>
-        <div className="coverage-heading mb-10">
-          <div className="coverage-heading-copy">
-            <h2 id="outside-heading" className="heading-title">Outside the scope of coursework <span className="coverage-heading-flower" aria-hidden="true">✿</span></h2>
-            <p className="muted mt-4 max-w-2xl">I co-founded Kuhaku Media to photograph events and share stories from pop culture communities. Use the camera controls to browse, then select the screen for the full coverage.</p>
-            <a className="kuhaku-facebook" href="https://www.facebook.com/Kuhakumedia" target="_blank" rel="noopener noreferrer">Kuhaku on Facebook</a>
-          </div>
-          <img src={cameraMascot} alt="" aria-hidden="true" className="coverage-mascot" />
-        </div>
+    <div id="coverages" className="photography-gallery">
+      <div className="photography-layout">
+        <header className="photography-intro reveal">
+          <h2 id="outside-heading" className="heading-title">Outside the scope of coursework <span className="photography-heading-flower" aria-hidden="true">✿</span></h2>
+          <p>Photography is one way I tell stories outside IT coursework. Use the camera controls to browse the collection. Select a photograph to open its original publication when available.</p>
+          <img src={cameraMascot} alt="" aria-hidden="true" className="photography-mascot" loading="lazy" />
+        </header>
 
-        <div className="coverage-camera-scene">
-          <div className="coverage-camera" role="region" onKeyDown={handleKeyDown} tabIndex={0} aria-label="Event coverage camera viewer. Use the camera buttons or left and right arrow keys to browse.">
-            <div className="coverage-camera-screen-bezel">
-              <a className={`coverage-camera-screen${zoomed ? " is-zoomed" : ""}`} href={activeEvent.url} target="_blank" rel="noopener noreferrer" aria-label={`Open full coverage for ${activeEvent.title} (opens in a new tab)`}>
-                <div className="coverage-camera-photo" key={activeEvent.id}>
-                  {activeImage ? (
-                    <img src={activeImage} alt={`${activeEvent.title} coverage preview`} className="coverage-camera-photo-main" />
+        <div className="photography-camera-feature reveal">
+          <div className="coverage-camera-scene">
+            <div className="coverage-camera" role="region" tabIndex={0} onKeyDown={handleCameraKeyDown} aria-label="Photography camera viewer. Use the controls or left and right arrow keys to browse photographs.">
+              <div className="coverage-camera-screen-bezel">
+                <div className="coverage-camera-screen">
+                  {cameraPhoto.url ? (
+                    <a className="coverage-camera-photo-link" href={cameraPhoto.url} target="_blank" rel="noopener noreferrer" aria-label={`Open original publication for ${cameraPhoto.label}${photoCredit} (opens in a new tab)`}>{lcdContent}</a>
                   ) : (
-                    <span className="coverage-camera-photo-fallback display-font">{activeEvent.title}</span>
+                    <div className="coverage-camera-photo-static">{lcdContent}</div>
                   )}
+                  <div id="camera-photo-information" className="coverage-camera-info-panel" hidden={!showInfo}>
+                    <span className="coverage-camera-info-kicker">Photo information</span>
+                    <h3>{cameraPhoto.label}</h3>
+                    {(cameraPhoto.source || cameraPhoto.category) && <p>{cameraPhoto.source}{cameraPhoto.category && ` / ${cameraPhoto.category}`}</p>}
+                    {cameraPhoto.description && <p>{cameraPhoto.description}</p>}
+                    {cameraPhoto.url && <a href={cameraPhoto.url} target="_blank" rel="noopener noreferrer">Open original <FiArrowUpRight size={15} aria-hidden="true" /></a>}
+                    {cameraPhoto.sourceUrl && <a href={cameraPhoto.sourceUrl} target="_blank" rel="noopener noreferrer">Kuhaku on Facebook <FiArrowUpRight size={15} aria-hidden="true" /></a>}
+                  </div>
                 </div>
-                <div className="coverage-camera-screen-top" aria-label={`Coverage ${activeIndex + 1} of ${allEvents.length}`}>
-                  <span>{position} / {total}</span>
-                </div>
-                <div className="coverage-camera-details" aria-live="polite" aria-atomic="true">
-                  <h3 className="display-font coverage-camera-title">{activeEvent.title}</h3>
-                  {showInfo && <p className="coverage-camera-description">{activeEvent.description}</p>}
-                </div>
-              </a>
-            </div>
-
-            <div className="coverage-camera-controls">
-              <p className="coverage-camera-brand display-font">RZ<span>✿</span></p>
-              <div className="coverage-camera-wheel" role="group" aria-label="Camera photo controls">
-                <button type="button" onClick={() => move(-1)} className="coverage-camera-button" aria-label={`Previous coverage, ${allEvents[(activeIndex - 1 + allEvents.length) % allEvents.length].title}`}>
-                  <FiChevronLeft size={20} aria-hidden="true" />
-                </button>
-                <span className="coverage-camera-wheel-center" aria-hidden="true" />
-                <button type="button" onClick={() => move(1)} className="coverage-camera-button" aria-label={`Next coverage, ${allEvents[(activeIndex + 1) % allEvents.length].title}`}>
-                  <FiChevronRight size={20} aria-hidden="true" />
-                </button>
               </div>
-              <div className="coverage-camera-bottom-controls" role="group" aria-label="Camera screen controls">
-                <button type="button" onClick={() => setShowInfo((visible) => !visible)} aria-pressed={showInfo} aria-label={showInfo ? "Hide photo information" : "Show photo information"} title={showInfo ? "Hide photo information" : "Show photo information"}><FiInfo size={17} aria-hidden="true" /></button>
-                <button type="button" onClick={() => setZoomed((value) => !value)} aria-pressed={zoomed} aria-label={zoomed ? "Fit photo to screen" : "Zoom photo to fill screen"} title={zoomed ? "Fit photo" : "Zoom photo"}>{zoomed ? <FiZoomOut size={17} aria-hidden="true" /> : <FiZoomIn size={17} aria-hidden="true" />}</button>
+              <div className="coverage-camera-controls">
+                <div className="coverage-camera-brand"><SakuraLogo /></div>
+                <div className="coverage-camera-wheel" role="group" aria-label="Camera photo controls">
+                  <button type="button" onClick={() => moveCamera(-1)} className="coverage-camera-button" aria-label="Previous photograph"><FiChevronLeft size={20} aria-hidden="true" /></button>
+                  <span className="coverage-camera-wheel-center" aria-hidden="true" />
+                  <button type="button" onClick={() => moveCamera(1)} className="coverage-camera-button" aria-label="Next photograph"><FiChevronRight size={20} aria-hidden="true" /></button>
+                </div>
+                <div className="coverage-camera-bottom-controls" role="group" aria-label="Camera screen controls">
+                  <button type="button" onClick={() => setShowInfo((value) => !value)} aria-expanded={showInfo} aria-controls="camera-photo-information" aria-label={showInfo ? "Hide photo information" : "Show photo information"} title={showInfo ? "Hide photo information" : "Show photo information"}><FiInfo size={17} aria-hidden="true" /></button>
+                  <button type="button" onClick={(event) => openZoom(event.currentTarget)} aria-haspopup="dialog" aria-label="Enlarge current photograph" title="Enlarge photograph"><FiZoomIn size={17} aria-hidden="true" /></button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <span className="sr-only" role="status" aria-live="polite">Photograph {position} of {total}: {cameraPhoto.label}{photoCredit}</span>
+
+      <dialog
+        ref={dialogRef}
+        className="photography-dialog"
+        aria-label={`${cameraPhoto.label}${photoCredit}, enlarged`}
+        onClose={handleDialogClose}
+        onKeyDown={handleDialogKeyDown}
+        onClick={(event) => { if (event.target === event.currentTarget) event.currentTarget.close(); }}
+      >
+        {zoomOpen && (
+          <div className="photography-dialog-content">
+            <div className="photography-dialog-top">
+              <span>{cameraPhoto.source && `${cameraPhoto.source} · `}{position} / {total}</span>
+              <button type="button" onClick={() => dialogRef.current?.close()} aria-label="Close photograph" className="photography-dialog-icon"><FiX aria-hidden="true" /></button>
+            </div>
+            <img key={cameraPhoto.id} src={cameraPhoto.fullImage} alt={`${cameraPhoto.label}${photoCredit}`} />
+            <div className="photography-dialog-bottom">
+              <div>
+                <h3>{cameraPhoto.label}</h3>
+                {cameraPhoto.description && <p>{cameraPhoto.description}</p>}
+                {cameraPhoto.url && (
+                  <a href={cameraPhoto.url} target="_blank" rel="noopener noreferrer">Open original <FiArrowUpRight aria-hidden="true" /></a>
+                )}
+              </div>
+              <div className="photography-dialog-controls" aria-label="Browse photographs">
+                <button type="button" onClick={() => moveCamera(-1)} aria-label="Previous photograph" className="photography-dialog-icon"><FiChevronLeft aria-hidden="true" /></button>
+                <button type="button" onClick={() => moveCamera(1)} aria-label="Next photograph" className="photography-dialog-icon"><FiChevronRight aria-hidden="true" /></button>
+              </div>
+            </div>
+          </div>
+        )}
+      </dialog>
     </div>
   );
 }

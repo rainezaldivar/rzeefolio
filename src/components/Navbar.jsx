@@ -1,36 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import { FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
 import { useTheme } from "../context/ThemeContext";
+import SakuraLogo from "./SakuraLogo";
 
 const navLinks = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
   { label: "Projects", href: "#works" },
-  { label: "Credentials", href: "#certificates" },
-  { label: "Outside", href: "#outside" },
+  { label: "Certifications", href: "#certificates" },
   { label: "Contact", href: "#contact" },
 ];
 
-function SakuraLogo() {
-  return (
-    <svg viewBox="0 0 86 54" aria-hidden="true" focusable="false">
-      <g fill="#ffd6e3" stroke="#a95f80" strokeWidth="1.5">
-        {[0, 72, 144, 216, 288].map((angle) => (
-          <ellipse key={angle} cx="23" cy="11" rx="8" ry="12" transform={`rotate(${angle} 23 25)`} />
-        ))}
-        <circle cx="23" cy="25" r="5" fill="#ffe8a5" />
-      </g>
-      <text x="40" y="38" fill="currentColor" fontFamily="'Cormorant Garamond', Georgia, serif" fontSize="27" fontWeight="700" letterSpacing="-3">RZ</text>
-    </svg>
-  );
-}
+// The photography section remains on the page but has no navigation item.
+const sectionHrefs = ["#home", "#about", "#works", "#certificates", "#outside", "#contact"];
 
-function ThemeSwitch() {
+function ThemeButton() {
   const { isDark, toggleTheme } = useTheme();
+  const actionLabel = isDark ? "Switch to day mode" : "Switch to night mode";
 
   return (
-    <button type="button" className="theme-switch" role="switch" aria-checked={isDark} aria-label={isDark ? "Night mode, switch to day mode" : "Day mode, switch to night mode"} onClick={toggleTheme}>
-      <span className="theme-switch-thumb" aria-hidden="true">{isDark ? <FiMoon size={24} /> : <FiSun size={25} />}</span>
+    <button type="button" className={`theme-button${isDark ? " is-night" : ""}`} aria-label={actionLabel} title={actionLabel} onClick={toggleTheme}>
+      <span className="theme-button-icon" aria-hidden="true">
+        <FiSun className="theme-button-sun" />
+        <FiMoon className="theme-button-moon" />
+      </span>
     </button>
   );
 }
@@ -48,11 +41,11 @@ export default function Navbar() {
       frame = requestAnimationFrame(() => {
         setScrolled(window.scrollY > 20);
         const marker = window.scrollY + Math.min(window.innerHeight * .45, 400);
-        const current = navLinks.reduce((active, link) => {
-          const section = document.querySelector(link.href);
-          return section && section.getBoundingClientRect().top + window.scrollY <= marker ? link.href : active;
+        const current = sectionHrefs.reduce((active, href) => {
+          const section = document.querySelector(href);
+          return section && section.getBoundingClientRect().top + window.scrollY <= marker ? href : active;
         }, "#home");
-        setActiveHref(current);
+        setActiveHref(current === "#outside" ? null : current);
       });
     };
     update();
@@ -88,13 +81,13 @@ export default function Navbar() {
     <>
       <nav className={`site-nav-wrap${scrolled ? " is-scrolled" : ""}`} aria-label="Main navigation">
         <div className="site-nav">
-          <a href="#home" className="nav-brand" aria-label="RZ, home" onClick={() => setMenuOpen(false)}><SakuraLogo /></a>
+          <a href="#home" className="nav-brand" aria-label="Raine Zaldivar, home" onClick={() => setMenuOpen(false)}><SakuraLogo /></a>
           <div className="nav-desktop">
             {navLinks.map((link) => <a key={link.href} href={link.href} className="nav-link" aria-current={activeHref === link.href ? "location" : undefined}>{link.label}</a>)}
-            <ThemeSwitch />
+            <ThemeButton />
           </div>
           <div className="nav-mobile-actions">
-            <ThemeSwitch />
+            <ThemeButton />
             <button ref={menuButton} type="button" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" className="icon-button">
               {menuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
             </button>

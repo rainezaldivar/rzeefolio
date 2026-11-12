@@ -8,6 +8,7 @@ export const projects = [
   {
     id: 1,
     title: "Alban Memorial Foundation",
+    summary: "A foundation website supporting disadvantaged Filipino families through wellness, livelihood, education, and financial aid.",
     description:
       "A charity website for the Alban Memorial Foundation that empowers disadvantaged Filipino families through wellness and livelihood programs. Focused on total human development, it provides educational support and financial aid to help marginalized sectors achieve self-sufficiency.",
     role: "Front-End Development",
@@ -17,10 +18,12 @@ export const projects = [
     status: "completed",
     liveUrl: "https://albanmemorial.onrender.com/",
     image: albanImg,
+    imageAlt: "Alban Memorial Foundation homepage with a donation and volunteer call to action",
   },
   {
     id: 2,
     title: "Pokémon GO Web Store",
+    summary: "A fan-made storefront with a cleaner interface for browsing Pokémon GO items, collections, and special events.",
     description:
       "A Pokémon GO inspired web store built as a final project. This reimagines the official storefront with a cleaner, more modern UI. Focusing on making the user experience smoother for browsing in-game items, collections, and special events.",
     role: "Front-End Developer",
@@ -30,10 +33,12 @@ export const projects = [
     status: "completed",
     liveUrl: "https://4eyesfeutech.github.io/FINAL-PROJECT-FOR-IT0063/",
     image: pokemonImg,
+    imageAlt: "Pokémon GO Web Store homepage with a shop call to action",
   },
   {
     id: 4,
     title: "Smiskisite",
+    summary: "A collector storefront where visitors can browse collections, search, and filter Smiski products.",
     description:
       "Originally built as a third-year CodeIgniter class final project, Smiskisite is a fan-made storefront for Smiski collectors. Refurbished with Next.js, it lets visitors browse collections and search and filter products.",
     role: "Full-Stack Development",
@@ -43,10 +48,12 @@ export const projects = [
     status: "in-progress",
     liveUrl: "https://smiskisite.vercel.app/",
     image: smiskisiteImg,
+    imageAlt: "Smiskisite collections page with search, filters, and product listings",
   },
   {
     id: "thesis",
     title: "Thesis project",
+    summary: "A private thesis project. Details and screenshots will be added when they are ready.",
     kind: "Project details to be added",
     platform: "Platform to be added",
     tech: [],
@@ -78,6 +85,8 @@ export const certificates = [
     title: "Cisco Certified Support Technician (CCST) – Networking",
     issuer: "Cisco",
     year: "February 2025",
+    dateTime: "2025-02",
+    area: "Networking",
     image: ciscoImg,
   },
   {
@@ -85,6 +94,8 @@ export const certificates = [
     title: "PMI Project Management Ready™",
     issuer: "PMI",
     year: "March 2026",
+    dateTime: "2026-03",
+    area: "Project management",
     image: pmiImg,
     imagePadding: "p-4",
   },
@@ -120,7 +131,7 @@ export const designTools = [
 
 export const techGroups = [
   { name: "Frontend", tools: ["HTML", "CSS", "JavaScript", "Bootstrap", "Tailwind CSS", "React", "Next.js"] },
-  { name: "Backend", tools: ["Laravel", "CodeIgniter", "MySQL", "Supabase"] },
+  { name: "Backend", tools: ["PHP", "Laravel", "CodeIgniter", "MySQL", "Supabase"] },
   { name: "Development & Collaboration", tools: ["Python", "C++", "Vite", "Git", "GitHub", "VS Code", "Antigravity", "Microsoft Azure"] },
   { name: "Design", tools: ["Figma", "Photoshop", "Canva"] },
 ];

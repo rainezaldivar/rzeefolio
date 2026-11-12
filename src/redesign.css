@@ -11,9 +11,9 @@ body { font-family: "Montserrat", sans-serif; }
 .nav-brand { white-space: nowrap; font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); }
 .nav-brand span { margin-left: .3rem; color: var(--accent-strong); font-family: "Montserrat", sans-serif; }
 .nav-desktop, .nav-actions { display: flex; align-items: center; gap: .15rem; }
-.nav-link { display: inline-flex; align-items: center; min-height: 2.6rem; padding: .35rem .65rem; border-radius: 0; font-size: .83rem; font-weight: 800; text-decoration: none; }
+.nav-link { display: inline-flex; align-items: center; min-height: 2.6rem; padding: .35rem .65rem; border-radius: 0; font-size: .83rem; font-weight: 700; text-decoration: none; }
 .nav-link:hover { background: transparent; }
-.nav-link[aria-current="location"] { color: var(--accent-strong); box-shadow: inset 0 -2px var(--accent-strong); }
+.nav-link[aria-current="location"] { color: var(--accent-strong); }
 .nav-actions .icon-button { border-radius: .6rem; background: transparent; }
 .nav-menu-toggle { display: none; }
 .mobile-menu { position: fixed; z-index: 49; inset: 4.75rem 0 auto; display: grid; gap: .1rem; padding: .6rem 1.25rem 1rem; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; box-shadow: 0 12px 25px rgba(20, 38, 70, .15); }
@@ -30,26 +30,24 @@ body { font-family: "Montserrat", sans-serif; }
 .hero-full .hero-copy, :root.dark .hero-full .hero-copy { width: 100%; max-width: 43rem; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; backdrop-filter: none; }
 .hero-name { margin: 1rem 0 0; font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(3.75rem, 7.5vw, 7.5rem); font-weight: 700; line-height: .98; letter-spacing: -.075em; color: var(--ink); }
 .hero-name span { display: block; color: var(--accent-strong); }
-.hero-role { margin-top: 1.8rem; font-size: clamp(1.05rem, 2vw, 1.35rem); font-weight: 900; letter-spacing: .01em; color: var(--ink); }
-.hero-role span { padding: 0 .35rem; color: var(--accent-strong); }
-.hero-summary { max-width: 36rem; margin-top: 1.1rem; font-size: 1.02rem; line-height: 1.8; font-weight: 600; color: var(--ink); }
+.hero-role { margin-top: 1.8rem; font-size: clamp(1.05rem, 2vw, 1.35rem); font-weight: 700; letter-spacing: .01em; color: var(--ink); }
 .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 2rem; }
 .hero-actions .kawaii-button { border-width: 1.5px; border-radius: .7rem; box-shadow: 0 3px 0 var(--accent-strong); }
 .hero-actions .kawaii-button.secondary { box-shadow: 0 3px 0 var(--shadow); }
-.hero-text-link { display: inline-flex; align-items: center; gap: .45rem; padding: .5rem .25rem; border-bottom: 1.5px solid currentColor; font-weight: 800; color: var(--ink); }
+.hero-text-link { display: inline-flex; align-items: center; gap: .45rem; padding: .5rem .25rem; border-bottom: 1.5px solid currentColor; font-weight: 700; color: var(--ink); }
 .hero-socials { display: flex; align-items: center; gap: .75rem; margin-top: 2.2rem; }
 .hero-socials a { display: grid; place-items: center; width: 2.35rem; height: 2.35rem; border: 1px solid currentColor; border-radius: .55rem; color: var(--ink); }
 .hero-socials a:hover { color: var(--accent-strong); }
 .hero-portrait { position: relative; align-self: end; width: min(100%, 30rem); max-height: min(76svh, 50rem); aspect-ratio: 4 / 5; margin: 0 auto; overflow: hidden; border: 1px solid var(--line); border-radius: 46% 46% .9rem .9rem; box-shadow: 0 16px 35px rgba(19, 38, 69, .18); }
 .hero-portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 58%; filter: saturate(.9) contrast(1.02) brightness(1.02); }
-.hero-portrait figcaption { position: absolute; right: 0; bottom: 7%; padding: .55rem .8rem; border: 1px solid var(--line); background: var(--surface); font-size: .8rem; font-weight: 800; color: var(--ink); transform: rotate(4deg); }
+.hero-portrait figcaption { position: absolute; right: 0; bottom: 7%; padding: .55rem .8rem; border: 1px solid var(--line); background: var(--surface); font-size: .8rem; font-weight: 700; color: var(--ink); transform: rotate(4deg); }
 .hero-portrait figcaption span { color: var(--accent-strong); }
-.hero-scroll { position: absolute; z-index: 3; bottom: 1.25rem; left: 50%; display: inline-flex; align-items: center; gap: .5rem; transform: translateX(-50%); font-size: .75rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
+.hero-scroll { position: absolute; z-index: 3; bottom: 1.25rem; left: 50%; display: inline-flex; align-items: center; gap: .5rem; transform: translateX(-50%); font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
 
 /* Chapter rhythm */
 .chapter-section { padding: clamp(5.5rem, 8vw, 8.5rem) clamp(1.25rem, 4vw, 4rem); scroll-margin-top: 4.75rem; }
 .chapter-heading { position: relative; margin-bottom: clamp(2.75rem, 5vw, 4.5rem); max-width: 50rem; }
-.chapter-index, .note-label { display: block; font-size: .72rem; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-strong); }
+.chapter-index, .note-label { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-strong); }
 .chapter-heading .eyebrow { margin-top: 1rem; }
 .chapter-heading .heading-title { margin-top: .6rem; }
 .outside-chapter { scroll-margin-top: 4.75rem; background: rgba(255, 250, 246, .32); }
@@ -62,7 +60,7 @@ body { font-family: "Montserrat", sans-serif; }
 .about-story { max-width: 42rem; padding-top: .8rem; }
 .about-story p { margin-bottom: 1.5rem; font-size: clamp(1.05rem, 1.5vw, 1.16rem); line-height: 1.9; color: var(--ink); }
 .about-story .about-lead { font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(1.5rem, 2.8vw, 2.35rem); font-weight: 600; line-height: 1.55; }
-.about-story a { color: var(--accent-strong); text-decoration: underline; text-underline-offset: .25rem; font-weight: 800; }
+.about-story a { color: var(--accent-strong); text-decoration: underline; text-underline-offset: .25rem; font-weight: 700; }
 .about-notes { border-top: 2px solid var(--accent-strong); }
 .about-note { display: grid; gap: .6rem; padding: 1.55rem 0; border-bottom: 1px solid var(--line); }
 .about-note strong { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.2rem; }
@@ -76,13 +74,13 @@ body { font-family: "Montserrat", sans-serif; }
 .project-story:nth-child(even) .project-story-media { order: 2; }
 .project-story-media { aspect-ratio: 1.45; overflow: hidden; border: 1px solid var(--line); background: var(--wash-b); }
 .project-story-media img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-.project-number { display: block; margin-bottom: 1.4rem; color: var(--accent-strong); font-size: .75rem; font-weight: 900; letter-spacing: .16em; }
+.project-number { display: block; margin-bottom: 1.4rem; color: var(--accent-strong); font-size: .75rem; font-weight: 700; letter-spacing: .16em; }
 .project-story-copy h3 { font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 700; line-height: 1.2; }
-.project-story-role { margin-top: .75rem; color: var(--accent-strong); font-size: .82rem; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; }
+.project-story-role { margin-top: .75rem; color: var(--accent-strong); font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
 .project-story-description { margin-top: 1.3rem; max-width: 32rem; color: var(--muted); line-height: 1.8; }
 .project-story-tech { display: flex; flex-wrap: wrap; gap: .45rem 1rem; margin-top: 1.5rem; }
-.project-story-tech span { padding-bottom: .2rem; border-bottom: 1px solid var(--line); font-size: .8rem; font-weight: 800; }
-.project-story-link, .involvement-copy a, .kuhaku-links a { display: inline-flex; align-items: center; gap: .45rem; width: max-content; max-width: 100%; margin-top: 1.8rem; border-bottom: 1.5px solid currentColor; padding-bottom: .25rem; color: var(--accent-strong); font-weight: 900; }
+.project-story-tech span { padding-bottom: .2rem; border-bottom: 1px solid var(--line); font-size: .8rem; font-weight: 700; }
+.project-story-link, .involvement-copy a, .kuhaku-links a { display: inline-flex; align-items: center; gap: .45rem; width: max-content; max-width: 100%; margin-top: 1.8rem; border-bottom: 1.5px solid currentColor; padding-bottom: .25rem; color: var(--accent-strong); font-weight: 700; }
 
 /* Credentials and campus record */
 .credentials-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 5vw, 5rem); }
@@ -103,12 +101,12 @@ body { font-family: "Montserrat", sans-serif; }
 .kuhaku-links { display: flex; flex-wrap: wrap; gap: .5rem 2rem; }
 .kuhaku-photo { margin: 0; }
 .kuhaku-photo img { display: block; width: 100%; max-height: 41rem; aspect-ratio: 1.2; object-fit: cover; }
-.kuhaku-photo figcaption, .social-feature-image figcaption { margin-top: .7rem; font-size: .68rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); }
+.kuhaku-photo figcaption, .social-feature-image figcaption { margin-top: .7rem; font-size: .68rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); }
 .social-media-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(17rem, .75fr); gap: clamp(3rem, 8vw, 8rem); align-items: start; }
 .social-pages { margin-top: 2.4rem; border-top: 1px solid var(--line); }
 .social-pages a { display: grid; grid-template-columns: 2.5rem 1fr auto; align-items: center; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid var(--line); color: var(--ink); }
 .social-pages a:hover { color: var(--accent-strong); }
-.social-pages a span { color: var(--accent-strong); font-size: .78rem; font-weight: 900; }
+.social-pages a span { color: var(--accent-strong); font-size: .78rem; font-weight: 700; }
 .social-pages a strong { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.12rem; }
 .social-feature-image { margin: 0; padding-top: 2rem; }
 .social-feature-image img { display: block; width: 100%; max-height: 33rem; aspect-ratio: 1; object-fit: contain; background: var(--surface); }
@@ -119,14 +117,14 @@ body { font-family: "Montserrat", sans-serif; }
 .creative-piece-image img { display: block; width: 100%; height: 100%; object-fit: contain; transition: transform .25s ease; }
 .creative-piece:hover img { transform: scale(1.025); }
 .creative-piece-caption { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: .3rem; padding-top: .75rem; }
-.creative-piece-caption span { grid-column: 1 / -1; color: var(--accent-strong); font-size: .7rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.creative-piece-caption span { grid-column: 1 / -1; color: var(--accent-strong); font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .creative-piece-caption strong { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.1rem; }
 
 /* Closing page */
 .contact-editorial { padding: 6rem clamp(1.25rem, 4vw, 4rem) 2rem; }
 .contact-layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(12rem, .7fr); gap: 3rem; align-items: end; padding-bottom: 5rem; }
 .contact-actions { display: grid; border-top: 1px solid var(--line); }
-.contact-actions a { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); color: var(--ink); font-weight: 900; }
+.contact-actions a { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); color: var(--ink); font-weight: 700; }
 .contact-actions a:hover { color: var(--accent-strong); }
 .contact-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
 .contact-bottom > span { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700; }
@@ -140,7 +138,6 @@ body { font-family: "Montserrat", sans-serif; }
 @media (max-width: 800px) {
   .hero-inner { grid-template-columns: 1fr minmax(12rem, .55fr); gap: 0; }
   .hero-name { font-size: clamp(3.6rem, 9vw, 6rem); }
-  .hero-summary { font-size: .94rem; }
   .about-editorial, .kuhaku-editorial, .social-media-layout { grid-template-columns: 1fr; }
   .about-story { max-width: 46rem; }
   .about-notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1.5rem; }
@@ -158,7 +155,6 @@ body { font-family: "Montserrat", sans-serif; }
   .hero-full .hero-copy { position: relative; z-index: 2; }
   .hero-name { font-size: clamp(3.5rem, 15vw, 5.4rem); }
   .hero-role { margin-top: 1.2rem; font-size: .95rem; }
-  .hero-summary { max-width: 30rem; font-size: .88rem; line-height: 1.65; }
   .hero-actions { gap: .65rem; margin-top: 1.3rem; }
   .hero-actions .kawaii-button { padding: .65rem .85rem; font-size: .82rem; }
   .hero-socials { margin-top: 1.3rem; }
@@ -261,16 +257,9 @@ body { font-family: "Montserrat", sans-serif; }
 .chapter-section { padding: clamp(5rem, 8vw, 8rem) clamp(1.25rem, 4vw, 4rem); }
 .chapter-heading { max-width: 55rem; margin-bottom: clamp(2rem, 4vw, 3.5rem); }
 .chapter-heading .heading-title { margin-top: 0; }
-.about-section { background: linear-gradient(180deg, #fff4f5, #f9e8f0); }
-.works-section { background: linear-gradient(180deg, #fcf6ef, #f6efff); }
-.certificates-section { background: linear-gradient(180deg, #eaf4ff, #e2f1f5); }
-.kuhaku-section { background: linear-gradient(180deg, #e8f4ed, #e5f2ef); }
-.creative-section { background: linear-gradient(180deg, #fff0e8, #fff5ee); }
-:root.dark .about-section { background: linear-gradient(180deg, #25244f, #32254f); }
-:root.dark .works-section { background: linear-gradient(180deg, #29284e, #302650); }
-:root.dark .certificates-section { background: linear-gradient(180deg, #1d355d, #1e3c60); }
-:root.dark .kuhaku-section { background: linear-gradient(180deg, #193d4c, #1c4352); }
-:root.dark .creative-section { background: linear-gradient(180deg, #4a354a, #3c2e4a); }
+.about-section, .works-section, .certificates-section, .kuhaku-section, .creative-section,
+:root.dark .about-section, :root.dark .works-section, :root.dark .certificates-section,
+:root.dark .kuhaku-section, :root.dark .creative-section { background: var(--section-surface); }
 .reveal { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s ease; }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
 
@@ -285,7 +274,7 @@ body { font-family: "Montserrat", sans-serif; }
 .about-block p { margin: .3rem 0; color: var(--muted); line-height: 1.7; }
 .about-block p strong { color: var(--ink); font-size: 1.08rem; }
 .tech-groups { display: grid; gap: 1.5rem; }
-.tech-group h4 { margin-bottom: .65rem; color: var(--accent-strong); font-size: .8rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.tech-group h4 { margin-bottom: .65rem; color: var(--accent-strong); font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .about-tags { gap: .55rem; }
 .about-tags span { padding: .4rem .75rem; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); box-shadow: 0 2px 0 var(--shadow); font-size: .83rem; }
 
@@ -311,16 +300,16 @@ body { font-family: "Montserrat", sans-serif; }
 .project-card-image { width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: var(--wash-b); }
 .project-card-image img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .35s ease; }
 .project-card:hover img { transform: scale(1.035); }
-.project-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem; height: 100%; background: var(--wash-d); color: var(--muted); font-weight: 800; }
+.project-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem; height: 100%; background: var(--wash-d); color: var(--muted); font-weight: 700; }
 .project-card-body { display: flex; flex: 1; flex-direction: column; padding: 1.5rem; }
 .project-meta { display: flex; flex-wrap: wrap; gap: .4rem; }
-.project-meta span { padding: .3rem .6rem; border-radius: 999px; background: var(--wash-a); color: var(--accent-strong); font-size: .7rem; font-weight: 900; }
+.project-meta span { padding: .3rem .6rem; border-radius: 999px; background: var(--wash-a); color: var(--accent-strong); font-size: .7rem; font-weight: 700; }
 .project-meta span + span { background: var(--wash-b); color: var(--ink); }
 .project-card h3 { margin-top: 1rem; font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(1.45rem, 2.4vw, 2rem); font-weight: 700; line-height: 1.25; }
-.project-card-role { margin-top: .5rem; color: var(--muted); font-size: .84rem; font-weight: 800; }
+.project-card-role { margin-top: .5rem; color: var(--muted); font-size: .84rem; font-weight: 700; }
 .project-story-tech { margin: 1.25rem 0 0; gap: .45rem; }
 .project-story-tech span { padding: .25rem .55rem; border: 1px solid var(--line); border-radius: .5rem; background: var(--wash-e); font-size: .73rem; }
-.project-card-action { display: inline-flex; align-items: center; gap: .4rem; margin-top: auto; padding-top: 1.4rem; color: var(--accent-strong); font-size: .85rem; font-weight: 900; }
+.project-card-action { display: inline-flex; align-items: center; gap: .4rem; margin-top: auto; padding-top: 1.4rem; color: var(--accent-strong); font-size: .85rem; font-weight: 700; }
 .project-card-action svg { transition: transform .2s ease; }
 .project-card:hover .project-card-action svg { transform: translate(3px, -3px); }
 .project-dialog, .artwork-dialog { width: min(calc(100% - 2rem), 50rem); max-height: min(90vh, 60rem); padding: 0; overflow: auto; border: 2px solid var(--line); border-radius: 1.5rem; background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgba(20,30,60,.3); }
@@ -329,10 +318,10 @@ body { font-family: "Montserrat", sans-serif; }
 .project-dialog-inner > p:not(.eyebrow) { margin-top: 1rem; color: var(--muted); line-height: 1.7; }
 .dialog-close { position: absolute; top: 1rem; right: 1rem; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border: 1px solid var(--line); border-radius: 50%; background: var(--surface-soft); color: var(--ink); cursor: pointer; }
 .thesis-screenshots { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; margin: 1.75rem 0; }
-.thesis-screenshots div { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem; aspect-ratio: 4 / 3; border: 2px dashed var(--line); border-radius: .8rem; background: var(--wash-b); color: var(--muted); font-size: .75rem; font-weight: 800; }
+.thesis-screenshots div { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem; aspect-ratio: 4 / 3; border: 2px dashed var(--line); border-radius: .8rem; background: var(--wash-b); color: var(--muted); font-size: .75rem; font-weight: 700; }
 .thesis-details { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
 .thesis-details div { padding: .9rem 0; border-top: 1px solid var(--line); }
-.thesis-details dt { color: var(--accent-strong); font-size: .75rem; font-weight: 900; text-transform: uppercase; }
+.thesis-details dt { color: var(--accent-strong); font-size: .75rem; font-weight: 700; text-transform: uppercase; }
 .thesis-details dd { margin: .3rem 0 0; color: var(--muted); }
 
 .credentials-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 5vw, 5rem); }
@@ -343,11 +332,11 @@ body { font-family: "Montserrat", sans-serif; }
 .badge-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 .badge-card { display: grid; align-content: center; gap: .8rem; min-width: 0; margin: 0; padding: 1rem; border: 1px solid var(--line); border-radius: 1rem; background: var(--surface); text-align: center; }
 .badge-card img { display: block; width: 100%; max-width: 9rem; aspect-ratio: 1; margin: auto; object-fit: contain; }
-.badge-card figcaption { color: var(--muted); font-size: .77rem; font-weight: 800; }
+.badge-card figcaption { color: var(--muted); font-size: .77rem; font-weight: 700; }
 
 .kuhaku-editorial { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); }
 .kuhaku-photo img { aspect-ratio: 4 / 3; border: 2px solid var(--surface); border-radius: 1.5rem; box-shadow: 0 6px 0 var(--shadow); }
-.kuhaku-facebook { display: inline-flex; align-items: center; gap: .45rem; margin-top: 1.5rem; border-bottom: 1.5px solid currentColor; padding-bottom: .2rem; color: var(--accent-strong); font-weight: 900; }
+.kuhaku-facebook { display: inline-flex; align-items: center; gap: .45rem; margin-top: 1.5rem; border-bottom: 1.5px solid currentColor; padding-bottom: .2rem; color: var(--accent-strong); font-weight: 700; }
 .coverages-panel { margin-top: clamp(4rem, 8vw, 7rem); padding-top: clamp(3rem, 5vw, 4rem); border-top: 1px solid var(--line); }
 .coverage-camera-scene { max-width: 48rem; margin: 0 auto; }
 
@@ -364,7 +353,7 @@ body { font-family: "Montserrat", sans-serif; }
 .artwork-dialog { width: min(calc(100% - 2rem), 60rem); }
 .artwork-dialog-inner > img { display: block; max-width: 100%; max-height: 68vh; margin: auto; object-fit: contain; }
 .artwork-dialog-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
-.artwork-dialog-footer span { color: var(--accent-strong); font-size: .75rem; font-weight: 900; text-transform: uppercase; }
+.artwork-dialog-footer span { color: var(--accent-strong); font-size: .75rem; font-weight: 700; text-transform: uppercase; }
 .artwork-dialog-footer h3 { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.25rem; font-weight: 700; }
 
 @keyframes rise-in { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
@@ -429,7 +418,7 @@ body { font-family: "Montserrat", sans-serif; }
 .creative-piece-caption strong,
 .artwork-dialog-footer h3 {
   font-family: "Montserrat", sans-serif;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: -.035em;
 }
 .heading-title { line-height: 1.18; }
@@ -465,28 +454,9 @@ body { font-family: "Montserrat", sans-serif; }
   background-size: 115% 115%;
   animation: pastel-drift 16s ease-in-out infinite alternate;
 }
-.hero-full::after {
-  content: "";
-  position: absolute;
-  right: clamp(2rem, 10vw, 11rem);
-  top: 23%;
-  width: clamp(3.2rem, 7vw, 6rem);
-  aspect-ratio: 1;
-  background: url("/sakura.svg") center / contain no-repeat;
-  opacity: .55;
-  pointer-events: none;
-  animation: sticker-float 5s ease-in-out infinite;
-}
-.hero-name { font-weight: 900; letter-spacing: -.055em; }
+.hero-name { font-weight: 700; letter-spacing: -.055em; }
 .hero-name span { color: #a65e82; }
 :root.dark .hero-name span { color: #ffe5b5; }
-.hero-role::after {
-  content: "✦";
-  display: inline-block;
-  margin-left: .6rem;
-  color: #e8a0be;
-  animation: flower-wiggle 4s ease-in-out infinite;
-}
 .nav-brand svg { transition: transform .35s cubic-bezier(.2, 1.6, .4, 1); }
 .nav-brand:hover svg { transform: rotate(-8deg) scale(1.06); }
 .nav-link:hover { transform: translateY(-3px) rotate(-2deg); }
@@ -644,7 +614,7 @@ body { font-family: "Montserrat", sans-serif; }
   background: var(--surface);
   box-shadow: 0 4px 0 var(--shadow);
 }
-.chapter-section:not(.kuhaku-section) { border-bottom: 2px dashed color-mix(in srgb, var(--line) 70%, transparent); }
+.chapter-section:not(.kuhaku-section) { border-bottom: 0; }
 @media (max-width: 640px) {
   .hero-stickers span:nth-child(1) { left: 5%; top: 20%; }
   .hero-stickers span:nth-child(2) { right: 4%; top: 26%; }

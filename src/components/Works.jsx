@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { FiArrowUpRight, FiImage, FiX } from "react-icons/fi";
 import { projects } from "../data/portfolioData";
 
@@ -13,21 +13,26 @@ function ProjectTechnologies({ tech, className = "" }) {
 function ProjectCardContent({ project, onInfo }) {
   return (
     <>
-      <button type="button" className="project-card-image" onClick={() => onInfo(project)} aria-label={`View information about ${project.title}`}>
-        {project.image ? (
-          <img src={project.image} alt={`${project.title} website preview`} loading="lazy" />
-        ) : (
-          <div className="project-placeholder"><FiImage size={30} aria-hidden="true" /><span>Screenshots coming soon</span></div>
-        )}
-      </button>
+      <div className="project-card-image">
+        <button type="button" className="project-image-trigger" onClick={() => onInfo(project)} aria-label={`View information about ${project.title}`}>
+          {project.image ? (
+            <img src={project.image} alt={project.imageAlt} loading="lazy" />
+          ) : (
+            <span className="project-placeholder"><FiImage size={30} aria-hidden="true" /><span>Screenshots coming soon</span></span>
+          )}
+        </button>
+        <div className="project-image-overlay">
+          <div className="project-overlay-actions">
+            <button type="button" className="project-overlay-action" onClick={() => onInfo(project)} aria-label={`View details about ${project.title}`}>View details</button>
+            {project.liveUrl && <a className="project-overlay-action" href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} website (opens in a new tab)`}>Visit website <FiArrowUpRight size={16} aria-hidden="true" /></a>}
+          </div>
+        </div>
+      </div>
       <div className="project-card-body">
         <h3><button type="button" className="project-card-title" onClick={() => onInfo(project)}>{project.title}</button></h3>
-        <p className="project-card-meta">{project.kind} <span aria-hidden="true">·</span> {project.platform}</p>
+        <p className="project-card-summary">{project.summary}</p>
+        {project.role && <p className="project-card-role"><span>My role</span>{project.role}</p>}
         <ProjectTechnologies tech={project.tech} className="project-card-technologies" />
-        <div className="project-card-actions">
-          <button type="button" onClick={() => onInfo(project)}>View details</button>
-          {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} website (opens in a new tab)`}>Visit site <FiArrowUpRight size={16} aria-hidden="true" /></a>}
-        </div>
       </div>
     </>
   );
@@ -37,7 +42,7 @@ function ProjectDetails({ project }) {
   if (!project.private) {
     return (
       <div className="project-detail-body">
-        {project.image && <div className="project-detail-image-frame"><img className="project-detail-image" src={project.image} alt={`${project.title} website preview`} /></div>}
+        {project.image && <div className="project-detail-image-frame"><img className="project-detail-image" src={project.image} alt={project.imageAlt} /></div>}
         <div className="project-detail-layout">
           <div className="project-detail-story">
             <h3>About the project</h3>
@@ -83,16 +88,52 @@ function ProjectDetails({ project }) {
 
 export default function Works() {
   const dialogRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const openerRef = useRef(null);
   const [selectedProject, setSelectedProject] = useState(null);
+
+  useLayoutEffect(() => {
+    if (!selectedProject || !dialogRef.current) return undefined;
+
+    const dialog = dialogRef.current;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    if (!dialog.open) dialog.showModal();
+    dialog.scrollTop = 0;
+    closeButtonRef.current?.focus({ preventScroll: true });
+
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+    };
+  }, [selectedProject]);
+
   const openProject = (project) => {
+    openerRef.current = document.activeElement;
     setSelectedProject(project);
-    if (!dialogRef.current?.open) dialogRef.current?.showModal();
+  };
+  const closeProject = () => dialogRef.current?.close();
+  const handleDialogClose = () => {
+    setSelectedProject(null);
+    openerRef.current?.focus?.({ preventScroll: true });
+    openerRef.current = null;
+  };
+  const handleBackdropClick = (event) => {
+    const dialog = dialogRef.current;
+    if (event.target !== dialog) return;
+    const { left, right, top, bottom } = dialog.getBoundingClientRect();
+    if (event.clientX < left || event.clientX > right || event.clientY < top || event.clientY > bottom) closeProject();
   };
 
   return (
     <section id="works" className="chapter-section works-section" aria-labelledby="works-heading">
       <div className="projects-container mx-auto">
-        <div className="chapter-heading reveal"><h2 id="works-heading" className="heading-title">My Projects</h2></div>
+        <div className="projects-heading-row">
+          <div className="chapter-heading reveal"><h2 id="works-heading" className="heading-title">My Projects</h2></div>
+          <p className="projects-intro reveal">A selection of web projects, from a foundation website to fan-made storefronts.</p>
+        </div>
         <div className="project-grid">
           {projects.map((project) => (
             <article className="project-card reveal" key={project.id}>
@@ -105,16 +146,19 @@ export default function Works() {
         ref={dialogRef}
         className="project-dialog"
         aria-labelledby="project-dialog-title"
-        onClose={() => { if (!dialogRef.current?.open) setSelectedProject(null); }}
-        onClick={(event) => { if (event.target === dialogRef.current) dialogRef.current.close(); }}
+        aria-describedby="project-dialog-subtitle"
+        onClose={handleDialogClose}
+        onClick={handleBackdropClick}
       >
         {selectedProject && (
           <div className="project-dialog-inner">
+            <div className="project-dialog-topbar">
+              <p className="project-dialog-eyebrow">Project details</p>
+              <button ref={closeButtonRef} type="button" className="dialog-close" onClick={closeProject} aria-label="Close project details">Close <FiX size={18} aria-hidden="true" /></button>
+            </div>
             <header className="project-dialog-header">
-              <button type="button" className="dialog-close" onClick={() => dialogRef.current?.close()} aria-label="Close project details"><FiX size={22} /></button>
-              <p className="project-dialog-eyebrow"><span aria-hidden="true">✿</span> Project details</p>
               <h2 id="project-dialog-title" className="project-detail-title">{selectedProject.title}</h2>
-              <p className="project-dialog-subtitle">{selectedProject.private ? "Private thesis project" : <>{selectedProject.kind} <span aria-hidden="true">·</span> {selectedProject.platform}</>}</p>
+              <p id="project-dialog-subtitle" className="project-dialog-subtitle">{selectedProject.private ? "Private thesis project" : <>{selectedProject.kind} <span aria-hidden="true">·</span> {selectedProject.platform}</>}</p>
             </header>
             <ProjectDetails project={selectedProject} />
           </div>

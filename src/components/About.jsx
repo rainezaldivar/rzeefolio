@@ -3,7 +3,7 @@ import antigravityLogo from "../assets/antigravity-icon.svg";
 import {
   SiBootstrap, SiCanva, SiCodeigniter, SiCplusplus, SiCss, SiFigma,
   SiGit, SiGithub, SiHtml5, SiJavascript, SiLaravel, SiMysql,
-  SiNextdotjs, SiPython, SiReact, SiSupabase, SiTailwindcss, SiVite,
+  SiNextdotjs, SiPhp, SiPython, SiReact, SiSupabase, SiTailwindcss, SiVite,
 } from "react-icons/si";
 import { VscVscode } from "react-icons/vsc";
 import { TbBrandAdobePhotoshop, TbBrandAzure } from "react-icons/tb";
@@ -30,6 +30,7 @@ const techVisuals = {
   "Tailwind CSS": [SiTailwindcss, "#16a8c2"],
   React: [SiReact, "#1a9fc8"],
   "Next.js": [SiNextdotjs, "#4c6174"],
+  PHP: [SiPhp, "#777bb4"],
   Laravel: [SiLaravel, "#e95b50"],
   CodeIgniter: [SiCodeigniter, "#d96a41"],
   MySQL: [SiMysql, "#4b81a0"],
@@ -99,12 +100,12 @@ export default function About() {
               <article className="education-entry">
                 <span className="education-period">2023 - Present</span>
                 <h4>FEU Institute of Technology</h4>
-                <p>Information Technology - Web and Mobile Applications</p>
+                <p>Bachelor of Science in Information Technology, specialized in Web and Mobile Applications</p>
               </article>
               <article className="education-entry">
                 <span className="education-period">2021-2023</span>
                 <h4>ACLC College of Meycauayan</h4>
-                <p>ICT - Programming</p>
+                <p>Technical-Vocational-Livelihood (TVL): Information and Communications Technology (ICT) – Programming</p>
                 <p className="education-distinction">Class Valedictorian</p>
               </article>
             </div>
@@ -117,9 +118,9 @@ export default function About() {
               <div className="tech-group reveal" key={group.name}>
                 <h4>{techGroupLabels[group.name]}</h4>
                 <ul className="tech-list">
-                  {group.tools.map((tool, index) => {
+                  {group.tools.map((tool) => {
                     const [Icon, color] = techVisuals[tool];
-                    return <li key={tool} style={{ "--pill-index": index }}><span className="tech-pill" style={{ "--tech-brand": color }}><span>{tool}</span><Icon size={20} aria-hidden="true" /></span></li>;
+                    return <li key={tool}><span className="tech-pill" style={{ "--tech-brand": color }} tabIndex={0}><Icon size={20} aria-hidden="true" /><span>{tool}</span></span></li>;
                   })}
                 </ul>
               </div>

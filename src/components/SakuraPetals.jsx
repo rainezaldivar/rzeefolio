@@ -32,12 +32,33 @@ export default function SakuraPetals() {
     const layer = layerRef.current;
     if (!layer) return;
 
+    const footer = document.getElementById("contact");
     const shapes = [...layer.querySelectorAll(".sakura-petal-shape")];
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let active = null;
     let hovered = null;
     let frame = 0;
+    let clipFrame = 0;
     let latestPointer = null;
+    let visibleBottom = window.innerHeight;
+    let lastClip = -1;
+
+    // Keep the fixed layer within the visible part of main, including when
+    // the footer only occupies the bottom of the viewport.
+    const updateFooterClip = () => {
+      clipFrame = 0;
+      visibleBottom = Math.min(window.innerHeight, Math.max(0, footer?.getBoundingClientRect().top ?? window.innerHeight));
+      const clip = window.innerHeight - visibleBottom;
+      if (clip !== lastClip) {
+        layer.style.setProperty("--petal-bottom-clip", `${clip}px`);
+        lastClip = clip;
+      }
+      layer.classList.toggle("is-paused", visibleBottom === 0);
+    };
+    const scheduleFooterClip = () => {
+      if (!clipFrame) clipFrame = requestAnimationFrame(updateFooterClip);
+    };
+    updateFooterClip();
 
     const reset = (petal) => {
       if (!petal) return;
@@ -48,6 +69,7 @@ export default function SakuraPetals() {
     };
 
     const findPetal = (x, y) => {
+      if (y >= visibleBottom) return null;
       for (const shape of shapes) {
         const rect = shape.getBoundingClientRect();
         if (!rect.width) continue;
@@ -142,9 +164,12 @@ export default function SakuraPetals() {
     document.addEventListener("pointerup", onPointerEnd);
     document.addEventListener("pointercancel", onPointerEnd);
     window.addEventListener("blur", onBlur);
+    window.addEventListener("scroll", scheduleFooterClip, { passive: true });
+    window.addEventListener("resize", scheduleFooterClip);
     reducedMotion.addEventListener("change", onBlur);
     return () => {
       cancelAnimationFrame(frame);
+      cancelAnimationFrame(clipFrame);
       document.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("pointerout", onPointerOut);
       document.removeEventListener("pointerdown", onPointerDown);
@@ -152,6 +177,8 @@ export default function SakuraPetals() {
       document.removeEventListener("pointerup", onPointerEnd);
       document.removeEventListener("pointercancel", onPointerEnd);
       window.removeEventListener("blur", onBlur);
+      window.removeEventListener("scroll", scheduleFooterClip);
+      window.removeEventListener("resize", scheduleFooterClip);
       reducedMotion.removeEventListener("change", onBlur);
     };
   }, []);

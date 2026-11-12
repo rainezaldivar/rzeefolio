@@ -1,7 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="20" fill="#173a7c"/>
-  <circle cx="43" cy="20" r="10" fill="#fff7d6"/>
-  <path d="M24 15c1.8 7.2 3.8 9.2 11 11-7.2 1.8-9.2 3.8-11 11-1.8-7.2-3.8-9.2-11-11 7.2-1.8 9.2-3.8 11-11Z" fill="#ffe0a5"/>
-  <circle cx="47" cy="44" r="2" fill="#f8bed1"/>
-  <circle cx="15" cy="47" r="1.5" fill="#fff7d6"/>
+  <style>
+    .petal { fill: #e8b8c8; stroke: #8d5267; stroke-width: 1.5; stroke-linejoin: round; }
+    .core { fill: #e9c88e; stroke: #8d5267; stroke-width: 1; }
+    @media (prefers-color-scheme: dark) {
+      .petal, .core { stroke: #fff0f4; }
+    }
+  </style>
+  <g transform="translate(32 32) scale(1.45)">
+    <path class="petal" d="M0 -3 C-7 -6 -9 -12 -5 -17 C-3 -19 -1 -18 0 -15 C1 -18 3 -19 5 -17 C9 -12 7 -6 0 -3Z"/>
+    <path class="petal" d="M0 -3 C-7 -6 -9 -12 -5 -17 C-3 -19 -1 -18 0 -15 C1 -18 3 -19 5 -17 C9 -12 7 -6 0 -3Z" transform="rotate(72)"/>
+    <path class="petal" d="M0 -3 C-7 -6 -9 -12 -5 -17 C-3 -19 -1 -18 0 -15 C1 -18 3 -19 5 -17 C9 -12 7 -6 0 -3Z" transform="rotate(144)"/>
+    <path class="petal" d="M0 -3 C-7 -6 -9 -12 -5 -17 C-3 -19 -1 -18 0 -15 C1 -18 3 -19 5 -17 C9 -12 7 -6 0 -3Z" transform="rotate(216)"/>
+    <path class="petal" d="M0 -3 C-7 -6 -9 -12 -5 -17 C-3 -19 -1 -18 0 -15 C1 -18 3 -19 5 -17 C9 -12 7 -6 0 -3Z" transform="rotate(288)"/>
+    <circle class="core" r="3.3"/>
+  </g>
 </svg>
