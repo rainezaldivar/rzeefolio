@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { FiArrowUpRight, FiImage, FiX } from "react-icons/fi";
+import { FiArrowUpRight, FiImage } from "react-icons/fi";
 import { projects } from "../data/portfolioData";
 
 function ProjectTechnologies({ tech, className = "" }) {
@@ -38,23 +38,27 @@ function ProjectCardContent({ project, onInfo }) {
 }
 
 function ProjectDetails({ project }) {
+  const leadScreenshot = project.private ? project.screenshots?.[0] : null;
+
   if (!project.private) {
     return (
       <div className="project-detail-body">
         {project.image && <div className="project-detail-image-frame"><img className="project-detail-image" src={project.image} alt={project.imageAlt} /></div>}
-        <div className="project-detail-layout">
-          <div className="project-detail-story">
-            <h3>About the project</h3>
-            <p className="project-detail-description">{project.description}</p>
-          </div>
-          <div className="project-detail-sidebar">
-            <dl className="project-detail-facts">
-              <div><dt>System type</dt><dd>{project.kind}</dd></div>
-              <div><dt>Platform</dt><dd>{project.platform}</dd></div>
-            </dl>
-            <h3>Tech Stacks</h3>
-            <ProjectTechnologies tech={project.tech} className="project-detail-technologies" />
-            <a className="project-detail-link" href={project.liveUrl} target="_blank" rel="noopener noreferrer">View Live <FiArrowUpRight size={18} aria-hidden="true" /></a>
+        <div className="project-detail-scroll" role="region" aria-label={`${project.title} information`} tabIndex={0}>
+          <div className="project-detail-layout">
+            <div className="project-detail-story">
+              <h3>About the project</h3>
+              <p className="project-detail-description">{project.description}</p>
+            </div>
+            <div className="project-detail-sidebar">
+              <dl className="project-detail-facts">
+                <div><dt>System type</dt><dd>{project.kind}</dd></div>
+                <div><dt>Platform</dt><dd>{project.platform}</dd></div>
+              </dl>
+              <h3>Tech Stacks</h3>
+              <ProjectTechnologies tech={project.tech} className="project-detail-technologies" />
+              {project.liveUrl && <a className="project-detail-link" href={project.liveUrl} target="_blank" rel="noopener noreferrer">View Live <FiArrowUpRight size={18} aria-hidden="true" /></a>}
+            </div>
           </div>
         </div>
       </div>
@@ -63,25 +67,35 @@ function ProjectDetails({ project }) {
 
   return (
     <div className="project-detail-body thesis-project-details">
-      <p className="project-detail-intro">{project.description}</p>
-      <dl className="thesis-details">
-        <div><dt>Official project title</dt><dd>{project.systemName}</dd></div>
-        <div><dt>System type</dt><dd>{project.kind}</dd></div>
-        <div><dt>Platform</dt><dd>{project.platform}</dd></div>
-        <div><dt>Availability</dt><dd>Private academic project</dd></div>
-      </dl>
-      <h3>Technologies</h3>
-      <ProjectTechnologies tech={project.tech} className="project-detail-technologies" />
-      <h3>Screenshots</h3>
-      <div className="thesis-screenshots" aria-label="Thesis project screenshots">
-        {project.screenshots.map((screenshot) => (
-          <figure key={screenshot.caption}>
-            <a href={screenshot.image} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size screenshot: ${screenshot.caption}`}>
-              <img src={screenshot.image} alt={screenshot.alt} width="1920" height="1080" loading="lazy" />
-            </a>
-            <figcaption>{screenshot.caption} <span>↗</span></figcaption>
-          </figure>
-        ))}
+      {leadScreenshot && <figure className="project-detail-lead">
+        <a className="project-detail-image-frame" href={leadScreenshot.image} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size screenshot: ${leadScreenshot.caption}`}>
+          <img className="project-detail-image" src={leadScreenshot.image} alt={leadScreenshot.alt} />
+        </a>
+        <figcaption>{leadScreenshot.caption}</figcaption>
+      </figure>}
+      <div className="project-detail-scroll" role="region" aria-label={`${project.title} information`} tabIndex={0}>
+        <p className="project-detail-intro">{project.description}</p>
+        <dl className="thesis-details">
+          <div><dt>Official project title</dt><dd>{project.systemName}</dd></div>
+          <div><dt>System type</dt><dd>{project.kind}</dd></div>
+          <div><dt>Platform</dt><dd>{project.platform}</dd></div>
+          <div><dt>Availability</dt><dd>Private academic project</dd></div>
+        </dl>
+        <h3>Technologies</h3>
+        <ProjectTechnologies tech={project.tech} className="project-detail-technologies" />
+        {project.screenshots.length > 1 && <>
+          <h3>Screenshots</h3>
+          <div className="thesis-screenshots" aria-label="Additional thesis project screenshots">
+            {project.screenshots.slice(1).map((screenshot) => (
+              <figure key={screenshot.caption}>
+                <a href={screenshot.image} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size screenshot: ${screenshot.caption}`}>
+                  <img src={screenshot.image} alt={screenshot.alt} width="1920" height="1080" loading="lazy" />
+                </a>
+                <figcaption>{screenshot.caption} <span>↗</span></figcaption>
+              </figure>
+            ))}
+          </div>
+        </>}
       </div>
     </div>
   );
@@ -89,7 +103,6 @@ function ProjectDetails({ project }) {
 
 export default function Works() {
   const dialogRef = useRef(null);
-  const closeButtonRef = useRef(null);
   const openerRef = useRef(null);
   const [selectedProject, setSelectedProject] = useState(null);
 
@@ -102,8 +115,7 @@ export default function Works() {
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
     if (!dialog.open) dialog.showModal();
-    dialog.scrollTop = 0;
-    closeButtonRef.current?.focus({ preventScroll: true });
+    dialog.focus({ preventScroll: true });
 
     return () => {
       document.documentElement.style.overflow = previousHtmlOverflow;
@@ -146,20 +158,19 @@ export default function Works() {
       <dialog
         ref={dialogRef}
         className="project-dialog"
+        tabIndex={-1}
         aria-labelledby="project-dialog-title"
-        aria-describedby="project-dialog-subtitle"
+        aria-describedby="project-dialog-subtitle project-dialog-hint"
         onClose={handleDialogClose}
         onClick={handleBackdropClick}
       >
         {selectedProject && (
           <div className="project-dialog-inner">
-            <div className="project-dialog-topbar">
-              <p className="project-dialog-eyebrow">Project details</p>
-              <button ref={closeButtonRef} type="button" className="dialog-close" onClick={closeProject} aria-label="Close project details">Close <FiX size={18} aria-hidden="true" /></button>
-            </div>
             <header className="project-dialog-header">
+              <p className="project-dialog-eyebrow">Project details</p>
               <h2 id="project-dialog-title" className="project-detail-title">{selectedProject.title}</h2>
               <p id="project-dialog-subtitle" className="project-dialog-subtitle">{selectedProject.private ? "Private thesis project" : <>{selectedProject.kind} <span aria-hidden="true">·</span> {selectedProject.platform}</>}</p>
+              <p id="project-dialog-hint" className="sr-only">Press Escape or click outside this window to close.</p>
             </header>
             <ProjectDetails project={selectedProject} />
           </div>
