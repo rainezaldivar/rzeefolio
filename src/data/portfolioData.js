@@ -18,6 +18,8 @@ export const projects = [
     status: "completed",
     liveUrl: "https://albanmemorial.onrender.com/",
     image: albanImg,
+    imageWidth: 1500,
+    imageHeight: 850,
     imageAlt: "Alban Memorial Foundation homepage with a donation and volunteer call to action",
   },
   {
@@ -33,6 +35,8 @@ export const projects = [
     status: "completed",
     liveUrl: "https://4eyesfeutech.github.io/FINAL-PROJECT-FOR-IT0063/",
     image: pokemonImg,
+    imageWidth: 1500,
+    imageHeight: 851,
     imageAlt: "Pokémon GO Web Store homepage with a shop call to action",
   },
   {
@@ -48,6 +52,8 @@ export const projects = [
     status: "in-progress",
     liveUrl: "https://smiskisite.vercel.app/",
     image: smiskisiteImg,
+    imageWidth: 1905,
+    imageHeight: 867,
     imageAlt: "Smiskisite collections page with search, filters, and product listings",
   },
   {

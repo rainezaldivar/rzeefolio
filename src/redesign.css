@@ -306,7 +306,6 @@ body { font-family: "Montserrat", sans-serif; }
 .project-meta span { padding: .3rem .6rem; border-radius: 999px; background: var(--wash-a); color: var(--accent-strong); font-size: .7rem; font-weight: 700; }
 .project-meta span + span { background: var(--wash-b); color: var(--ink); }
 .project-card h3 { margin-top: 1rem; font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(1.45rem, 2.4vw, 2rem); font-weight: 700; line-height: 1.25; }
-.project-card-role { margin-top: .5rem; color: var(--muted); font-size: .84rem; font-weight: 700; }
 .project-story-tech { margin: 1.25rem 0 0; gap: .45rem; }
 .project-story-tech span { padding: .25rem .55rem; border: 1px solid var(--line); border-radius: .5rem; background: var(--wash-e); font-size: .73rem; }
 .project-card-action { display: inline-flex; align-items: center; gap: .4rem; margin-top: auto; padding-top: 1.4rem; color: var(--accent-strong); font-size: .85rem; font-weight: 700; }

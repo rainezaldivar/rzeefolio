@@ -1,17 +1,29 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import defaultCursor from "../assets/cursor-previews/cursor-default.png";
 import hoverCursor from "../assets/cursor-previews/cursor-hover.png";
 
 const interactiveSelector = 'a, button, [role="button"], input:not([type="hidden"]), select, summary, label[for], [data-cursor-hover]';
 
+function placeCursor(cursor, x, y, dialog, offset) {
+  if (!cursor) return false;
+  if (dialog) {
+    const bounds = dialog.getBoundingClientRect();
+    if (x < bounds.left || x > bounds.right || y < bounds.top || y > bounds.bottom) return false;
+  }
+  cursor.style.transform = `translate3d(${x + offset.x}px, ${y + offset.y}px, 0) translate(-50%, -50%)`;
+  return true;
+}
+
 export default function CustomCursor() {
   const cursorRef = useRef(null);
   const lastPosition = useRef({ x: -100, y: -100 });
+  const cursorOffset = useRef({ x: 0, y: 0 });
   const [enabled, setEnabled] = useState(false);
   const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [portalTarget, setPortalTarget] = useState(null);
+  const activeDialogRef = useRef(null);
 
   useEffect(() => {
     const media = window.matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
@@ -42,12 +54,44 @@ export default function CustomCursor() {
   useEffect(() => {
     if (!enabled) return;
 
-    const syncTarget = () => setPortalTarget(document.querySelector("dialog[open]") ?? document.body);
-    syncTarget();
-    const observer = new MutationObserver(syncTarget);
+    // Keep the illustrated cursor in the modal's top layer so it remains visible
+    // at viewport pointer coordinates over popup controls.
+    const syncDialog = () => {
+      const dialog = document.querySelector("dialog[open]");
+      activeDialogRef.current = dialog;
+      setPortalTarget(dialog ?? document.body);
+    };
+    syncDialog();
+    const observer = new MutationObserver(syncDialog);
     observer.observe(document.body, { attributes: true, attributeFilter: ["open"], subtree: true });
     return () => observer.disconnect();
   }, [enabled]);
+
+  useLayoutEffect(() => {
+    if (!enabled || !portalTarget) return;
+    const calibrate = () => {
+      const { x, y } = lastPosition.current;
+      cursorOffset.current = { x: 0, y: 0 };
+      const inBounds = x >= 0 && placeCursor(cursorRef.current, x, y, activeDialogRef.current, cursorOffset.current);
+      if (inBounds) {
+        const bounds = cursorRef.current.getBoundingClientRect();
+        cursorOffset.current = {
+          x: x - (bounds.left + bounds.width / 2),
+          y: y - (bounds.top + bounds.height / 2),
+        };
+        placeCursor(cursorRef.current, x, y, activeDialogRef.current, cursorOffset.current);
+      }
+      return inBounds;
+    };
+    const inBounds = calibrate();
+    const frame = requestAnimationFrame(() => setVisible(inBounds));
+    const onResize = () => setVisible(calibrate());
+    window.addEventListener("resize", onResize);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [enabled, portalTarget]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -56,11 +100,9 @@ export default function CustomCursor() {
     const move = (event) => {
       if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
       lastPosition.current = { x: event.clientX, y: event.clientY };
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
-      }
+      const inBounds = placeCursor(cursorRef.current, event.clientX, event.clientY, activeDialogRef.current, cursorOffset.current);
       setHovered(Boolean(event.target instanceof Element && event.target.closest(interactiveSelector)));
-      setVisible(true);
+      setVisible(inBounds);
     };
     const hide = (event) => {
       if (!event.relatedTarget) setVisible(false);
@@ -77,13 +119,6 @@ export default function CustomCursor() {
       window.removeEventListener("blur", blur);
     };
   }, [enabled]);
-
-  useEffect(() => {
-    if (cursorRef.current) {
-      const { x, y } = lastPosition.current;
-      cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
-    }
-  }, [portalTarget]);
 
   if (!enabled) return null;
 

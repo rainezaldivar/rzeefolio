@@ -117,14 +117,18 @@ export default function App() {
           }}
         >
           <div className="intro-loader-content" aria-hidden="true">
-            <SakuraLogo />
+            <div className="intro-loader-mark">
+              <span className="intro-loader-petal intro-loader-petal-left" />
+              <SakuraLogo />
+              <span className="intro-loader-petal intro-loader-petal-right" />
+            </div>
             <p className="intro-loader-name">Raine Zaldivar</p>
             <span className="intro-loader-label">Portfolio</span>
             <span className="intro-loader-rule" />
           </div>
         </div>
       )}
-      <div className="site-shell" inert={introPhase === "loading"} aria-busy={introPhase === "loading"}>
+      <div className="site-shell" inert={introPhase !== "done"} aria-busy={introPhase !== "done"}>
         <CelestialCycle />
         <SakuraPetals />
         <a className="skip-link" href="#main-content">Skip to main content</a>

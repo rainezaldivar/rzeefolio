@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { FiArrowUpRight, FiImage, FiX } from "react-icons/fi";
+import { FiArrowUpRight, FiImage, FiPlus, FiX } from "react-icons/fi";
 import { projects } from "../data/portfolioData";
 
 function ProjectTechnologies({ tech, className = "" }) {
@@ -16,7 +16,7 @@ function ProjectCardContent({ project, onInfo }) {
       <div className="project-card-image">
         <button type="button" className="project-image-trigger" onClick={() => onInfo(project)} aria-label={`View information about ${project.title}`}>
           {project.image ? (
-            <img src={project.image} alt={project.imageAlt} loading="lazy" />
+            <img src={project.image} alt={project.imageAlt} width={project.imageWidth} height={project.imageHeight} loading="lazy" />
           ) : (
             <span className="project-placeholder"><FiImage size={30} aria-hidden="true" /><span>Screenshots coming soon</span></span>
           )}
@@ -29,9 +29,8 @@ function ProjectCardContent({ project, onInfo }) {
         </div>
       </div>
       <div className="project-card-body">
-        <h3><button type="button" className="project-card-title" onClick={() => onInfo(project)}>{project.title}</button></h3>
+        <h3><button type="button" className="project-card-title" onClick={() => onInfo(project)}><span>{project.title}</span><FiPlus size={18} aria-hidden="true" /></button></h3>
         <p className="project-card-summary">{project.summary}</p>
-        {project.role && <p className="project-card-role"><span>My role</span>{project.role}</p>}
         <ProjectTechnologies tech={project.tech} className="project-card-technologies" />
       </div>
     </>
@@ -52,7 +51,6 @@ function ProjectDetails({ project }) {
             <dl className="project-detail-facts">
               <div><dt>System type</dt><dd>{project.kind}</dd></div>
               <div><dt>Platform</dt><dd>{project.platform}</dd></div>
-              <div><dt>My role</dt><dd>{project.role}</dd></div>
             </dl>
             <h3>Tech Stacks</h3>
             <ProjectTechnologies tech={project.tech} className="project-detail-technologies" />

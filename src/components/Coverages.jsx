@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { FiArrowUpRight, FiChevronLeft, FiChevronRight, FiInfo, FiX, FiZoomIn } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiInfo, FiX, FiZoomIn } from "react-icons/fi";
 import { eventCoverages } from "../data/portfolioData";
 import cameraMascot from "../assets/coverage-camera.png";
 import SakuraLogo from "./SakuraLogo";
@@ -75,7 +75,6 @@ export default function Coverages() {
   const dialogRef = useRef(null);
   const triggerRef = useRef(null);
   const cameraPhoto = allPhotos[cameraIndex];
-  const photoCredit = cameraPhoto.source ? ` from ${cameraPhoto.source}` : "";
   const position = String(cameraIndex + 1).padStart(2, "0");
   const total = String(allPhotos.length).padStart(2, "0");
 
@@ -119,12 +118,7 @@ export default function Coverages() {
         <img src={cameraPhoto.image} alt="" className="coverage-camera-photo-main" />
       </span>
       <span className="coverage-camera-screen-top" aria-hidden="true">{position} / {total}</span>
-      {cameraPhoto.url && <span className="photography-camera-open-hint" aria-hidden="true">Open original <FiArrowUpRight size={14} /></span>}
-      <span className="photography-camera-screen-label">
-        {cameraPhoto.source && <small>{cameraPhoto.source}</small>}
-        <strong>{cameraPhoto.label}</strong>
-        {cameraPhoto.description && <span className="photography-camera-screen-caption">{cameraPhoto.description}</span>}
-      </span>
+      {!showInfo && <span className="photography-camera-screen-label"><strong>{cameraPhoto.label}</strong></span>}
     </>
   );
 
@@ -132,9 +126,11 @@ export default function Coverages() {
     <div id="coverages" className="photography-gallery">
       <div className="photography-layout">
         <header className="photography-intro reveal">
-          <h2 id="outside-heading" className="heading-title">Outside the scope of coursework <span className="photography-heading-flower" aria-hidden="true">✿</span></h2>
+          <div className="photography-intro-heading">
+            <h2 id="outside-heading" className="heading-title">Beyond IT</h2>
+            <img src={cameraMascot} alt="Hachiware holding a camera" className="photography-mascot" loading="lazy" />
+          </div>
           <p>Photography is one way I tell stories outside IT coursework. Use the camera controls to browse the collection. Select a photograph to open its original publication when available.</p>
-          <img src={cameraMascot} alt="" aria-hidden="true" className="photography-mascot" loading="lazy" />
         </header>
 
         <div className="photography-camera-feature reveal">
@@ -143,17 +139,12 @@ export default function Coverages() {
               <div className="coverage-camera-screen-bezel">
                 <div className="coverage-camera-screen">
                   {cameraPhoto.url ? (
-                    <a className="coverage-camera-photo-link" href={cameraPhoto.url} target="_blank" rel="noopener noreferrer" aria-label={`Open original publication for ${cameraPhoto.label}${photoCredit} (opens in a new tab)`}>{lcdContent}</a>
+                    <a className="coverage-camera-photo-link" href={cameraPhoto.url} target="_blank" rel="noopener noreferrer" aria-label={`Open original publication for ${cameraPhoto.label} (opens in a new tab)`}>{lcdContent}</a>
                   ) : (
                     <div className="coverage-camera-photo-static">{lcdContent}</div>
                   )}
-                  <div id="camera-photo-information" className="coverage-camera-info-panel" hidden={!showInfo}>
-                    <span className="coverage-camera-info-kicker">Photo information</span>
-                    <h3>{cameraPhoto.label}</h3>
-                    {(cameraPhoto.source || cameraPhoto.category) && <p>{cameraPhoto.source}{cameraPhoto.category && ` / ${cameraPhoto.category}`}</p>}
-                    {cameraPhoto.description && <p>{cameraPhoto.description}</p>}
-                    {cameraPhoto.url && <a href={cameraPhoto.url} target="_blank" rel="noopener noreferrer">Open original <FiArrowUpRight size={15} aria-hidden="true" /></a>}
-                    {cameraPhoto.sourceUrl && <a href={cameraPhoto.sourceUrl} target="_blank" rel="noopener noreferrer">Kuhaku on Facebook <FiArrowUpRight size={15} aria-hidden="true" /></a>}
+                  <div id="camera-photo-information" className="coverage-camera-info-panel" role="region" aria-label="Photograph description" hidden={!showInfo}>
+                    <p>{cameraPhoto.description || "No description available for this photograph."}</p>
                   </div>
                 </div>
               </div>
@@ -173,12 +164,12 @@ export default function Coverages() {
           </div>
         </div>
       </div>
-      <span className="sr-only" role="status" aria-live="polite">Photograph {position} of {total}: {cameraPhoto.label}{photoCredit}</span>
+      <span className="sr-only" role="status" aria-live="polite">Photograph {position} of {total}: {cameraPhoto.label}</span>
 
       <dialog
         ref={dialogRef}
         className="photography-dialog"
-        aria-label={`${cameraPhoto.label}${photoCredit}, enlarged`}
+        aria-label={`${cameraPhoto.label}, enlarged`}
         onClose={handleDialogClose}
         onKeyDown={handleDialogKeyDown}
         onClick={(event) => { if (event.target === event.currentTarget) event.currentTarget.close(); }}
@@ -186,17 +177,14 @@ export default function Coverages() {
         {zoomOpen && (
           <div className="photography-dialog-content">
             <div className="photography-dialog-top">
-              <span>{cameraPhoto.source && `${cameraPhoto.source} · `}{position} / {total}</span>
+              <span>{position} / {total}</span>
               <button type="button" onClick={() => dialogRef.current?.close()} aria-label="Close photograph" className="photography-dialog-icon"><FiX aria-hidden="true" /></button>
             </div>
-            <img key={cameraPhoto.id} src={cameraPhoto.fullImage} alt={`${cameraPhoto.label}${photoCredit}`} />
+            <img key={cameraPhoto.id} src={cameraPhoto.fullImage} alt={cameraPhoto.label} />
             <div className="photography-dialog-bottom">
               <div>
                 <h3>{cameraPhoto.label}</h3>
                 {cameraPhoto.description && <p>{cameraPhoto.description}</p>}
-                {cameraPhoto.url && (
-                  <a href={cameraPhoto.url} target="_blank" rel="noopener noreferrer">Open original <FiArrowUpRight aria-hidden="true" /></a>
-                )}
               </div>
               <div className="photography-dialog-controls" aria-label="Browse photographs">
                 <button type="button" onClick={() => moveCamera(-1)} aria-label="Previous photograph" className="photography-dialog-icon"><FiChevronLeft aria-hidden="true" /></button>

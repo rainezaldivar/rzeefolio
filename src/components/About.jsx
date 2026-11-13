@@ -49,10 +49,10 @@ const techVisuals = {
 };
 
 const techGroupLabels = {
-  Frontend: "Frontend development",
-  Backend: "Backend development",
-  "Development & Collaboration": "Development & collaboration",
-  Design: "Design & prototyping",
+  Frontend: "Frontend Development",
+  Backend: "Backend Development",
+  "Development & Collaboration": "Development & Collaboration",
+  Design: "Design & Prototyping",
 };
 
 function SakuraSprig() {
@@ -85,8 +85,9 @@ export default function About() {
         </div>
         <div className="about-intro-grid">
           <div className="about-story reveal">
-            <p>A fourth-year IT student at FEU Institute of Technology specializing in <strong>web and mobile application development</strong>, with a focus on <strong>frontend development, UI/UX design, and quality assurance</strong>. I’m also exploring <strong>full stack development</strong> to understand how products come together from end to end.</p>
-            <p>Through academic projects, client work, and student leadership, I’ve gained hands-on experience in <strong>system design, software testing, and project coordination</strong>. I enjoy collaborating with teammates and turning small details into better experiences. Outside of tech, I co-founded <a href="https://www.facebook.com/Kuhakumedia" target="_blank" rel="noopener noreferrer"><strong>Kuhaku Media</strong></a>, where we cover pop culture events, which has sharpened my eye for visual detail.</p>
+            <p>I'm a fourth-year Information Technology student at FEU Institute of Technology, specializing in Web and Mobile Application Development. I'm particularly interested in <strong>frontend development, UI/UX design, and quality assurance</strong>, while continuing to explore full-stack development.</p>
+            <p>My experience includes working on academic and client projects involving <strong>web development, software testing, and project coordination</strong>.</p>
+            <p>Outside my technical work, I co-founded <strong>Kuhaku Media</strong>, where I serve as Associate Editor-in-Chief, co-lead an 11-member team, and oversee photography operations and media coverage.</p>
           </div>
           <figure className="about-portrait reveal">
             <img src={rainePhoto} alt="Portrait of Raine Zaldivar" width="1200" height="1800" loading="lazy" decoding="async" />
