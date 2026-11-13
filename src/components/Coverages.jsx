@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { FiChevronLeft, FiChevronRight, FiInfo, FiX, FiZoomIn } from "react-icons/fi";
+import { useState } from "react";
+import { FiChevronLeft, FiChevronRight, FiInfo, FiZoomIn } from "react-icons/fi";
 import { eventCoverages } from "../data/portfolioData";
 import cameraMascot from "../assets/coverage-camera.png";
 import SakuraLogo from "./SakuraLogo";
@@ -71,25 +71,13 @@ const allPhotos = [featuredPhoto, ...photoSequence.filter((photo) => photo.id !=
 export default function Coverages() {
   const [cameraIndex, setCameraIndex] = useState(0);
   const [showInfo, setShowInfo] = useState(false);
-  const [zoomOpen, setZoomOpen] = useState(false);
-  const dialogRef = useRef(null);
-  const triggerRef = useRef(null);
+  const [zoomed, setZoomed] = useState(false);
   const cameraPhoto = allPhotos[cameraIndex];
   const position = String(cameraIndex + 1).padStart(2, "0");
   const total = String(allPhotos.length).padStart(2, "0");
 
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (zoomOpen && !dialog.open) dialog.showModal();
-    if (!zoomOpen && dialog.open) dialog.close();
-  }, [zoomOpen]);
-
-  const openZoom = (trigger) => {
-    triggerRef.current = trigger;
-    setZoomOpen(true);
-  };
-
   const moveCamera = (direction) => {
+    setZoomed(false);
     setCameraIndex((current) => (current + direction + allPhotos.length) % allPhotos.length);
   };
 
@@ -97,28 +85,17 @@ export default function Coverages() {
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       event.preventDefault();
       moveCamera(event.key === "ArrowLeft" ? -1 : 1);
+    } else if (event.key === "Escape" && zoomed) {
+      setZoomed(false);
     }
-  };
-
-  const handleDialogKeyDown = (event) => {
-    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-      event.preventDefault();
-      moveCamera(event.key === "ArrowLeft" ? -1 : 1);
-    }
-  };
-
-  const handleDialogClose = () => {
-    setZoomOpen(false);
-    triggerRef.current?.focus();
   };
 
   const lcdContent = (
     <>
       <span className="coverage-camera-photo" key={cameraPhoto.id}>
-        <img src={cameraPhoto.image} alt="" className="coverage-camera-photo-main" />
+        <img src={zoomed ? cameraPhoto.fullImage : cameraPhoto.image} alt="" className="coverage-camera-photo-main" />
       </span>
       <span className="coverage-camera-screen-top" aria-hidden="true">{position} / {total}</span>
-      {!showInfo && <span className="photography-camera-screen-label"><strong>{cameraPhoto.label}</strong></span>}
     </>
   );
 
@@ -136,15 +113,19 @@ export default function Coverages() {
         <div className="photography-camera-feature reveal">
           <div className="coverage-camera-scene">
             <div className="coverage-camera" role="region" tabIndex={0} onKeyDown={handleCameraKeyDown} aria-label="Photography camera viewer. Use the controls or left and right arrow keys to browse photographs.">
+              <button type="button" className="coverage-camera-shutter" onClick={() => moveCamera(1)} aria-label="Shutter: show next photograph" title="Show next photograph"><span aria-hidden="true" /></button>
               <div className="coverage-camera-screen-bezel">
-                <div className="coverage-camera-screen">
+                <div className={`coverage-camera-screen${zoomed ? " is-zoomed" : ""}`}>
                   {cameraPhoto.url ? (
                     <a className="coverage-camera-photo-link" href={cameraPhoto.url} target="_blank" rel="noopener noreferrer" aria-label={`Open original publication for ${cameraPhoto.label} (opens in a new tab)`}>{lcdContent}</a>
                   ) : (
                     <div className="coverage-camera-photo-static">{lcdContent}</div>
                   )}
-                  <div id="camera-photo-information" className="coverage-camera-info-panel" role="region" aria-label="Photograph description" hidden={!showInfo}>
-                    <p>{cameraPhoto.description || "No description available for this photograph."}</p>
+                  <div className={`photography-camera-screen-label${showInfo ? " is-expanded" : ""}`}>
+                    <strong>{cameraPhoto.label}</strong>
+                    <div id="camera-photo-information" className="photography-camera-screen-description" role="region" aria-label="Photograph description" aria-hidden={!showInfo}>
+                      <p>{cameraPhoto.description || "No description available for this photograph."}</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -152,12 +133,12 @@ export default function Coverages() {
                 <div className="coverage-camera-brand"><SakuraLogo /></div>
                 <div className="coverage-camera-wheel" role="group" aria-label="Camera photo controls">
                   <button type="button" onClick={() => moveCamera(-1)} className="coverage-camera-button" aria-label="Previous photograph"><FiChevronLeft size={20} aria-hidden="true" /></button>
-                  <span className="coverage-camera-wheel-center" aria-hidden="true" />
+                  <button type="button" onClick={() => setZoomed((value) => !value)} className="coverage-camera-wheel-center" aria-pressed={zoomed} aria-label={zoomed ? "Return photograph to normal size" : "Zoom into photograph"}><span>OK</span></button>
                   <button type="button" onClick={() => moveCamera(1)} className="coverage-camera-button" aria-label="Next photograph"><FiChevronRight size={20} aria-hidden="true" /></button>
                 </div>
                 <div className="coverage-camera-bottom-controls" role="group" aria-label="Camera screen controls">
                   <button type="button" onClick={() => setShowInfo((value) => !value)} aria-expanded={showInfo} aria-controls="camera-photo-information" aria-label={showInfo ? "Hide photo information" : "Show photo information"} title={showInfo ? "Hide photo information" : "Show photo information"}><FiInfo size={17} aria-hidden="true" /></button>
-                  <button type="button" onClick={(event) => openZoom(event.currentTarget)} aria-haspopup="dialog" aria-label="Enlarge current photograph" title="Enlarge photograph"><FiZoomIn size={17} aria-hidden="true" /></button>
+                  <button type="button" onClick={() => setZoomed((value) => !value)} aria-pressed={zoomed} aria-label={zoomed ? "Zoom out of photograph" : "Zoom into photograph"} title={zoomed ? "Zoom out" : "Zoom in"}><FiZoomIn size={17} aria-hidden="true" /></button>
                 </div>
               </div>
             </div>
@@ -166,34 +147,6 @@ export default function Coverages() {
       </div>
       <span className="sr-only" role="status" aria-live="polite">Photograph {position} of {total}: {cameraPhoto.label}</span>
 
-      <dialog
-        ref={dialogRef}
-        className="photography-dialog"
-        aria-label={`${cameraPhoto.label}, enlarged`}
-        onClose={handleDialogClose}
-        onKeyDown={handleDialogKeyDown}
-        onClick={(event) => { if (event.target === event.currentTarget) event.currentTarget.close(); }}
-      >
-        {zoomOpen && (
-          <div className="photography-dialog-content">
-            <div className="photography-dialog-top">
-              <span>{position} / {total}</span>
-              <button type="button" onClick={() => dialogRef.current?.close()} aria-label="Close photograph" className="photography-dialog-icon"><FiX aria-hidden="true" /></button>
-            </div>
-            <img key={cameraPhoto.id} src={cameraPhoto.fullImage} alt={cameraPhoto.label} />
-            <div className="photography-dialog-bottom">
-              <div>
-                <h3>{cameraPhoto.label}</h3>
-                {cameraPhoto.description && <p>{cameraPhoto.description}</p>}
-              </div>
-              <div className="photography-dialog-controls" aria-label="Browse photographs">
-                <button type="button" onClick={() => moveCamera(-1)} aria-label="Previous photograph" className="photography-dialog-icon"><FiChevronLeft aria-hidden="true" /></button>
-                <button type="button" onClick={() => moveCamera(1)} aria-label="Next photograph" className="photography-dialog-icon"><FiChevronRight aria-hidden="true" /></button>
-              </div>
-            </div>
-          </div>
-        )}
-      </dialog>
     </div>
   );
 }

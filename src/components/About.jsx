@@ -121,7 +121,7 @@ export default function About() {
                 <ul className="tech-list">
                   {group.tools.map((tool) => {
                     const [Icon, color] = techVisuals[tool];
-                    return <li key={tool}><span className="tech-pill" style={{ "--tech-brand": color }} tabIndex={0}><Icon size={20} aria-hidden="true" /><span>{tool}</span></span></li>;
+                    return <li key={tool}><span className="tech-pill" style={{ "--tech-brand": color }}><Icon size={20} aria-hidden="true" /><span>{tool}</span></span></li>;
                   })}
                 </ul>
               </div>

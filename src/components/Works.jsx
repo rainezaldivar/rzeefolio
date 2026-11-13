@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { FiArrowUpRight, FiImage, FiPlus, FiX } from "react-icons/fi";
+import { FiArrowUpRight, FiImage, FiX } from "react-icons/fi";
 import { projects } from "../data/portfolioData";
 
 function ProjectTechnologies({ tech, className = "" }) {
@@ -29,9 +29,9 @@ function ProjectCardContent({ project, onInfo }) {
         </div>
       </div>
       <div className="project-card-body">
-        <h3><button type="button" className="project-card-title" onClick={() => onInfo(project)}><span>{project.title}</span><FiPlus size={18} aria-hidden="true" /></button></h3>
+        <h3><button type="button" className="project-card-title" onClick={() => onInfo(project)}>{project.title}</button></h3>
         <p className="project-card-summary">{project.summary}</p>
-        <ProjectTechnologies tech={project.tech} className="project-card-technologies" />
+        <ProjectTechnologies tech={project.cardTech ?? project.tech} className="project-card-technologies" />
       </div>
     </>
   );
@@ -63,23 +63,26 @@ function ProjectDetails({ project }) {
 
   return (
     <div className="project-detail-body thesis-project-details">
-      <p className="project-detail-intro">This thesis project is not publicly accessible. Add the project information and screenshots here when they are ready.</p>
-      <h3>Screenshots</h3>
-      <div className="thesis-screenshots" aria-label="Screenshot placeholders">
-        <div><FiImage size={30} /><span>Screenshot 1</span></div>
-        <div><FiImage size={30} /><span>Screenshot 2</span></div>
-        <div><FiImage size={30} /><span>Screenshot 3</span></div>
-      </div>
-      <h3>Project details</h3>
+      <p className="project-detail-intro">{project.description}</p>
       <dl className="thesis-details">
-        <div><dt>System name</dt><dd>To be added</dd></div>
-        <div><dt>System type</dt><dd>To be added</dd></div>
-        <div><dt>Platform</dt><dd>To be added</dd></div>
-        <div><dt>What it does</dt><dd>To be added</dd></div>
-        <div><dt>My contribution</dt><dd>To be added</dd></div>
+        <div><dt>Official project title</dt><dd>{project.systemName}</dd></div>
+        <div><dt>System type</dt><dd>{project.kind}</dd></div>
+        <div><dt>Platform</dt><dd>{project.platform}</dd></div>
+        <div><dt>Availability</dt><dd>Private academic project</dd></div>
       </dl>
-      <h3>Tech Stacks</h3>
+      <h3>Technologies</h3>
       <ProjectTechnologies tech={project.tech} className="project-detail-technologies" />
+      <h3>Screenshots</h3>
+      <div className="thesis-screenshots" aria-label="Thesis project screenshots">
+        {project.screenshots.map((screenshot) => (
+          <figure key={screenshot.caption}>
+            <a href={screenshot.image} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size screenshot: ${screenshot.caption}`}>
+              <img src={screenshot.image} alt={screenshot.alt} width="1920" height="1080" loading="lazy" />
+            </a>
+            <figcaption>{screenshot.caption} <span>↗</span></figcaption>
+          </figure>
+        ))}
+      </div>
     </div>
   );
 }

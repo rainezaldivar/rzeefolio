@@ -1,10 +1,55 @@
-import albanImg from "../assets/project-previews/alban.jpg";
-import pokemonImg from "../assets/project-previews/pokemon.jpg";
-import smiskisiteImg from "../assets/smiskisite.png";
+import albanImg from "../assets/project-previews/alban.png";
+import pokemonImg from "../assets/project-previews/pokemon.png";
+import smiskisiteImg from "../assets/project-previews/smiskisite.png";
+import thesisDashboardImg from "../assets/project-previews/feu-compass-osd-dashboard.png";
+import thesisMatchImg from "../assets/project-previews/feu-compass-smart-match.png";
+import thesisAssetImg from "../assets/project-previews/feu-compass-asset-record.png";
+import thesisGncImg from "../assets/project-previews/feu-compass-gnc-dashboard.png";
+import thesisInterventionImg from "../assets/project-previews/feu-compass-intervention-hub.png";
 import ciscoImg from "../assets/cisco.png";
 import pmiImg from "../assets/PMI.png";
 
 export const projects = [
+  {
+    id: "thesis",
+    title: "FEU-COMPASS",
+    systemName: "FEU-CDGRS: Centralized Operations Platform for Student Discipline and Guidance Referrals with AI-Assisted Asset Resolution",
+    summary: "A student services platform connecting discipline records, guidance referrals, and AI-assisted lost-and-found matching.",
+    description: "A four-member capstone project for FEU Manila's Office of Student Discipline and Guidance & Counseling. The system brings violation and incident records, confidential guidance referrals, and asset tracking into one workflow. An AI-assisted matching service suggests potential matches between lost and found items for staff to review.",
+    kind: "Student services operations platform",
+    platform: "Web application and student mobile app",
+    tech: ["Laravel", "Tailwind CSS", "MySQL", "Python", "FastAPI", "Microsoft Power Apps", "Microsoft Azure", "Microsoft Entra ID"],
+    cardTech: ["Laravel", "Tailwind CSS", "FastAPI", "Power Apps"],
+    image: thesisDashboardImg,
+    imageWidth: 1920,
+    imageHeight: 1080,
+    imageAlt: "FEU-COMPASS Office of Student Discipline dashboard with quick actions and status charts",
+    screenshots: [
+      { image: thesisDashboardImg, alt: "Office of Student Discipline dashboard with actions for violations, incidents, confiscated items, and guidance referrals", caption: "Office of Student Discipline dashboard" },
+      { image: thesisMatchImg, alt: "Smart Match Finder results showing ranked potential matches for a lost item", caption: "AI-assisted lost-and-found matching" },
+      { image: thesisAssetImg, alt: "Lost asset record with a photo and an action to find similar items", caption: "Lost-and-found asset record" },
+      { image: thesisGncImg, alt: "Guidance and Counseling portal dashboard with referrals and case statistics", caption: "Guidance and Counseling dashboard" },
+      { image: thesisInterventionImg, alt: "Supportive Intervention Hub showing a referral table and filtering controls", caption: "Supportive Intervention Hub" },
+    ],
+    private: true,
+  },
+  {
+    id: 4,
+    title: "Smiskisite",
+    summary: "A collector storefront where visitors can browse collections, search, and filter Smiski products.",
+    description:
+      "Originally built as a third-year CodeIgniter class final project, Smiskisite is a fan-made storefront for Smiski collectors. Refurbished with Next.js, it lets visitors browse collections and search and filter products.",
+    role: "Full-Stack Development",
+    kind: "Collector storefront",
+    platform: "Web application",
+    tech: ["Next.js", "React", "Tailwind CSS", "Supabase"],
+    status: "in-progress",
+    liveUrl: "https://smiskisite.vercel.app/",
+    image: smiskisiteImg,
+    imageWidth: 1920,
+    imageHeight: 1080,
+    imageAlt: "Smiskisite collections page with search, filters, and product listings",
+  },
   {
     id: 1,
     title: "Alban Memorial Foundation",
@@ -18,8 +63,8 @@ export const projects = [
     status: "completed",
     liveUrl: "https://albanmemorial.onrender.com/",
     image: albanImg,
-    imageWidth: 1500,
-    imageHeight: 850,
+    imageWidth: 1920,
+    imageHeight: 1080,
     imageAlt: "Alban Memorial Foundation homepage with a donation and volunteer call to action",
   },
   {
@@ -35,35 +80,9 @@ export const projects = [
     status: "completed",
     liveUrl: "https://4eyesfeutech.github.io/FINAL-PROJECT-FOR-IT0063/",
     image: pokemonImg,
-    imageWidth: 1500,
-    imageHeight: 851,
+    imageWidth: 1920,
+    imageHeight: 1080,
     imageAlt: "Pokémon GO Web Store homepage with a shop call to action",
-  },
-  {
-    id: 4,
-    title: "Smiskisite",
-    summary: "A collector storefront where visitors can browse collections, search, and filter Smiski products.",
-    description:
-      "Originally built as a third-year CodeIgniter class final project, Smiskisite is a fan-made storefront for Smiski collectors. Refurbished with Next.js, it lets visitors browse collections and search and filter products.",
-    role: "Full-Stack Development",
-    kind: "Collector storefront",
-    platform: "Web application",
-    tech: ["Next.js", "React", "Tailwind CSS", "Supabase"],
-    status: "in-progress",
-    liveUrl: "https://smiskisite.vercel.app/",
-    image: smiskisiteImg,
-    imageWidth: 1905,
-    imageHeight: 867,
-    imageAlt: "Smiskisite collections page with search, filters, and product listings",
-  },
-  {
-    id: "thesis",
-    title: "Thesis project",
-    summary: "A private thesis project. Details and screenshots will be added when they are ready.",
-    kind: "Project details to be added",
-    platform: "Platform to be added",
-    tech: [],
-    private: true,
   },
 ];
 

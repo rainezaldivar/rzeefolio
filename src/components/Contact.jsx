@@ -15,8 +15,8 @@ export default function Contact() {
       <div className="projects-container mx-auto contact-content">
         <div className="footer-main">
           <div className="footer-intro reveal">
-            <h2 id="contact-heading" className="footer-heading">Have an opportunity in mind?</h2>
-            <p className="footer-summary">I'm open to internship opportunities, professional connections, and collaborations.</p>
+            <h2 id="contact-heading" className="footer-heading">Let's talk about what's next.</h2>
+            <p className="footer-summary">I welcome internship opportunities and collaborations in development, photography, and creative work.</p>
             <p className="footer-connect">Let's connect.</p>
           </div>
           <div className="footer-contact-column reveal">
