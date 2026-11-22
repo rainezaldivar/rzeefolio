@@ -1,21 +1,28 @@
 # Rzeefolio
 
-Raine Zaldivar's portfolio for frontend development, UI/UX, and quality assurance work. It presents web and mobile projects, certifications, event coverage, and contact information.
+Raine Zaldivar's portfolio for frontend development, UI/UX, and quality assurance. It brings together selected projects, certifications, photography, and ways to connect.
 
-## Stack
+## Explore the portfolio
 
-React 19, Vite 8, Tailwind CSS 4, Motion for React (the `framer-motion` package), and React Icons. The site uses local project images and CSS for its light and dark themes and responsive layouts.
+- **Projects:** FEU-COMPASS, Smiskisite, Alban Memorial Foundation, and Pokémon GO Web Store. Each project has a details popup that shows only the information available for it.
+- **Beyond IT:** A camera-style photography viewer with photo navigation, captions, and original publication links where available.
+- **Day and night modes:** Day mode is the default; a visitor's theme choice is saved locally.
+- **Motion and accessibility:** The opening animation and section transitions respect reduced-motion preferences. The site supports keyboard navigation and responsive layouts.
+
+## Built with
+
+React 19, Vite 8, Tailwind CSS 4, Motion for React (`framer-motion`), and React Icons. Project and photography images are stored locally in the repository.
 
 ## Run locally
 
-Requires a Node.js version supported by Vite 8.
+Install Node.js and npm, then run:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite. To check or package the site:
+Open the local address printed by Vite. To check or preview a production build:
 
 ```bash
 npm run lint
@@ -23,23 +30,12 @@ npm run build
 npm run preview
 ```
 
-There is no automated test script in `package.json`.
+## Where to update content
 
-## Project layout
+- `src/data/portfolioData.js` — projects and certifications.
+- `src/components/Coverages.jsx` — photography entries and their publication links.
+- `src/components/Contact.jsx` — email and social links.
+- `public/RaineCV.pdf` — downloadable CV.
+- `src/design-system.css` — current design tokens and component styles. Styles also load from `index.css`, `redesign.css`, and `storybook.css`, in that order.
 
-- `src/components/` contains portfolio sections and project dialogs.
-- `src/data/portfolioData.js` holds project, certificate, and event data.
-- `src/assets/` contains images imported by components and project data.
-- `public/RaineCV.pdf` is the resume downloaded from the hero and contact sections.
-
-The stylesheets load in this order: `index.css`, `redesign.css`, `storybook.css`, then `design-system.css`. The final file contains the current component overrides, so check the cascade before changing shared styles.
-
-## Styling and motion
-
-Tailwind CSS 4 is already connected through the Vite plugin. Its portfolio utilities are defined with `@theme inline` in `src/index.css` and read the light and dark design tokens in `src/design-system.css`. Use those utilities for new component layout and type; keep the older CSS selectors for sections that have not been migrated yet. Remove a legacy declaration when moving the same property to a utility, since unlayered CSS overrides Tailwind's utility layer.
-
-Motion for React uses the installed `framer-motion` package. `MotionConfig` applies the visitor's reduced-motion preference, and `src/hooks/useScrollReveals.js` animates the existing `.reveal` elements once as they enter view. The intro handles the transition into this single-page site; section links remain normal anchor navigation.
-
-## Updating content
-
-Replace `public/RaineCV.pdf` with the current resume while keeping the filename, or update both download links if the filename changes. Project contribution prompts in `portfolioData.js` also need Raine's confirmed tasks. FEU-COMPASS team-level testing results are labeled separately from Raine's own QA activities, which still need supporting detail. Add certificate verification URLs only when official links are available.
+The portfolio is a single-page React and Vite site. Section links use page anchors; the intro plays on initial entry rather than between sections.
