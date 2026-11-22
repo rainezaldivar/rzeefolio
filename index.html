@@ -2,15 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=6" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=7" />
     <meta name="theme-color" content="#f7f3ea" />
+    <script>
+      try {
+        if (localStorage.getItem("portfolioThemePreference") === "dark") {
+          document.documentElement.classList.add("dark");
+          document.querySelector('meta[name="theme-color"]').setAttribute("content", "#0d1f41");
+        }
+      } catch {
+        // Day mode remains the default when storage is unavailable.
+      }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
       content="Portfolio of Raine Zaldivar: frontend development, quality assurance, photography, and graphic design."
     />
     <meta name="author" content="Raine Zaldivar" />
-    <title>rzeefolio | Raine Zaldivar</title>
+    <title>Raine Zaldivar</title>
     <!-- Airy serif headings and clear sans-serif text, inspired by the supplied reference. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

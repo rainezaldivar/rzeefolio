@@ -1,4 +1,5 @@
-import rainePhoto from "../assets/raine-portrait.png";
+import rainePhoto from "../assets/raine-portrait-720.png";
+import rainePhotoLarge from "../assets/raine-portrait.png";
 import antigravityLogo from "../assets/antigravity-icon.svg";
 import {
   SiBootstrap, SiCanva, SiCodeigniter, SiCplusplus, SiCss, SiFigma,
@@ -90,7 +91,7 @@ export default function About() {
             <p>Outside my technical work, I co-founded <strong>Kuhaku Media</strong>, where I serve as Associate Editor-in-Chief, co-lead an 11-member team, and oversee photography operations and media coverage.</p>
           </div>
           <figure className="about-portrait reveal">
-            <img src={rainePhoto} alt="Portrait of Raine Zaldivar" width="1200" height="1800" loading="lazy" decoding="async" />
+            <img src={rainePhoto} srcSet={`${rainePhoto} 720w, ${rainePhotoLarge} 1200w`} sizes="(max-width: 640px) 70vw, 320px" alt="Portrait of Raine Zaldivar" width="720" height="1080" loading="lazy" decoding="async" />
           </figure>
         </div>
         <div className="about-field-notes reveal">
@@ -121,7 +122,7 @@ export default function About() {
                 <ul className="tech-list">
                   {group.tools.map((tool) => {
                     const [Icon, color] = techVisuals[tool];
-                    return <li key={tool}><span className="tech-pill" style={{ "--tech-brand": color }}><Icon size={20} aria-hidden="true" /><span>{tool}</span></span></li>;
+                    return <li key={tool}><span className="tech-pill" tabIndex={0} style={{ "--tech-brand": color }}><Icon size={20} aria-hidden="true" /><span>{tool}</span></span></li>;
                   })}
                 </ul>
               </div>

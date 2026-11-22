@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
 import { useTheme } from "../context/ThemeContext";
-import SakuraLogo from "./SakuraLogo";
+import RZMonogram from "./RZMonogram";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -11,7 +11,7 @@ const navLinks = [
   { label: "Contact", href: "#contact" },
 ];
 
-// The photography section remains on the page but has no navigation item.
+// These sections remain on the page without navigation items.
 const sectionHrefs = ["#home", "#about", "#works", "#certificates", "#outside", "#contact"];
 
 function ThemeButton() {
@@ -81,7 +81,7 @@ export default function Navbar() {
     <>
       <nav className={`site-nav-wrap${scrolled ? " is-scrolled" : ""}`} aria-label="Main navigation">
         <div className="site-nav">
-          <a href="#home" className="nav-brand" aria-label="Raine Zaldivar, home" onClick={() => setMenuOpen(false)}><SakuraLogo /></a>
+          <a href="#home" className="nav-brand" aria-label="Raine Zaldivar, home" onClick={() => setMenuOpen(false)}><RZMonogram /></a>
           <div className="nav-desktop">
             {navLinks.map((link) => <a key={link.href} href={link.href} className="nav-link" aria-current={activeHref === link.href ? "location" : undefined}>{link.label}</a>)}
             <ThemeButton />

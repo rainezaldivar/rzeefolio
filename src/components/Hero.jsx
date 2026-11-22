@@ -16,7 +16,12 @@ export default function Hero() {
       <div className="hero-inner">
         <div className="hero-copy">
           <h1 id="home-heading" className="hero-name">Raine <span>Zaldivar</span></h1>
-          <p className="hero-role">Frontend Developer / Quality Assurance</p>
+          <p className="hero-role">Aspiring Frontend Developer and QA Engineer.</p>
+          <p className="hero-statement">Building intuitive interfaces, testing every detail with care.</p>
+          <div className="hero-actions">
+            <a className="ui-button ui-button--primary" href="#works">View Projects</a>
+            <a className="ui-button" href="/RaineCV.pdf" download="Raine_Zaldivar_CV.pdf">Download CV</a>
+          </div>
         </div>
       </div>
       <a className={`hero-scroll${hasStartedScrolling ? " is-scrolling" : ""}`} href="#about">

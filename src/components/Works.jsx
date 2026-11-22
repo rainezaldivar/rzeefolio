@@ -1,11 +1,11 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { FiArrowUpRight, FiImage } from "react-icons/fi";
+import { FiArrowUpRight, FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
 import { projects } from "../data/portfolioData";
 
 function ProjectTechnologies({ tech, className = "" }) {
   return (
     <span className={`project-tech-list ${className}`} role="list" aria-label="Technologies used">
-      {(tech.length ? tech : ["To be added"]).map((item) => <span role="listitem" key={item}>{item}</span>)}
+      {tech.map((item) => <span role="listitem" key={item}>{item}</span>)}
     </span>
   );
 }
@@ -15,11 +15,7 @@ function ProjectCardContent({ project, onInfo }) {
     <>
       <div className="project-card-image">
         <button type="button" className="project-image-trigger" onClick={() => onInfo(project)} aria-label={`View information about ${project.title}`}>
-          {project.image ? (
-            <img src={project.image} alt={project.imageAlt} width={project.imageWidth} height={project.imageHeight} loading="lazy" />
-          ) : (
-            <span className="project-placeholder"><FiImage size={30} aria-hidden="true" /><span>Screenshots coming soon</span></span>
-          )}
+          <img src={project.cardImage ?? project.image} alt={project.imageAlt} width={project.cardImageWidth ?? project.imageWidth} height={project.cardImageHeight ?? project.imageHeight} loading="lazy" decoding="async" />
         </button>
         <div className="project-image-overlay">
           <div className="project-overlay-actions">
@@ -37,65 +33,108 @@ function ProjectCardContent({ project, onInfo }) {
   );
 }
 
-function ProjectDetails({ project }) {
-  const leadScreenshot = project.private ? project.screenshots?.[0] : null;
-
-  if (!project.private) {
-    return (
-      <div className="project-detail-body">
-        {project.image && <div className="project-detail-image-frame"><img className="project-detail-image" src={project.image} alt={project.imageAlt} /></div>}
-        <div className="project-detail-scroll" role="region" aria-label={`${project.title} information`} tabIndex={0}>
-          <div className="project-detail-layout">
-            <div className="project-detail-story">
-              <h3>About the project</h3>
-              <p className="project-detail-description">{project.description}</p>
-            </div>
-            <div className="project-detail-sidebar">
-              <dl className="project-detail-facts">
-                <div><dt>System type</dt><dd>{project.kind}</dd></div>
-                <div><dt>Platform</dt><dd>{project.platform}</dd></div>
-              </dl>
-              <h3>Tech Stacks</h3>
-              <ProjectTechnologies tech={project.tech} className="project-detail-technologies" />
-              {project.liveUrl && <a className="project-detail-link" href={project.liveUrl} target="_blank" rel="noopener noreferrer">View Live <FiArrowUpRight size={18} aria-hidden="true" /></a>}
-            </div>
-          </div>
-        </div>
+function ProjectDetailHeader({ project, onClose }) {
+  return (
+    <header className="project-dialog-header">
+      <div>
+        <p className="project-dialog-eyebrow">Project details</p>
+        <h2 id="project-dialog-title" className="project-detail-title">{project.title}</h2>
+        <p id="project-dialog-subtitle" className="project-dialog-subtitle">{project.kind}</p>
       </div>
-    );
-  }
+      <button type="button" className="project-dialog-close" onClick={onClose} aria-label="Close project details"><FiX size={20} aria-hidden="true" /></button>
+    </header>
+  );
+}
+
+function ProjectGallery({ project, images, imageIndex, onImageChange }) {
+  const image = images[imageIndex];
+  const hasMultipleImages = images.length > 1;
+  const label = image.caption ?? project.title;
 
   return (
-    <div className="project-detail-body thesis-project-details">
-      {leadScreenshot && <figure className="project-detail-lead">
-        <a className="project-detail-image-frame" href={leadScreenshot.image} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size screenshot: ${leadScreenshot.caption}`}>
-          <img className="project-detail-image" src={leadScreenshot.image} alt={leadScreenshot.alt} />
-        </a>
-        <figcaption>{leadScreenshot.caption}</figcaption>
-      </figure>}
-      <div className="project-detail-scroll" role="region" aria-label={`${project.title} information`} tabIndex={0}>
-        <p className="project-detail-intro">{project.description}</p>
-        <dl className="thesis-details">
-          <div><dt>Official project title</dt><dd>{project.systemName}</dd></div>
-          <div><dt>System type</dt><dd>{project.kind}</dd></div>
-          <div><dt>Platform</dt><dd>{project.platform}</dd></div>
-          <div><dt>Availability</dt><dd>Private academic project</dd></div>
-        </dl>
-        <h3>Technologies</h3>
-        <ProjectTechnologies tech={project.tech} className="project-detail-technologies" />
-        {project.screenshots.length > 1 && <>
-          <h3>Screenshots</h3>
-          <div className="thesis-screenshots" aria-label="Additional thesis project screenshots">
-            {project.screenshots.slice(1).map((screenshot) => (
-              <figure key={screenshot.caption}>
-                <a href={screenshot.image} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size screenshot: ${screenshot.caption}`}>
-                  <img src={screenshot.image} alt={screenshot.alt} width="1920" height="1080" loading="lazy" />
-                </a>
-                <figcaption>{screenshot.caption} <span>↗</span></figcaption>
-              </figure>
+    <div className="project-detail-media">
+      <figure className="project-detail-lead">
+        <div className="project-detail-image-display">
+          <img key={image.image} className="project-detail-image" src={image.image} alt={image.alt} />
+        </div>
+        <figcaption className="project-gallery-toolbar">
+          <span className="project-gallery-caption">{label}</span>
+          {hasMultipleImages && (
+            <>
+              <span className="project-carousel-count" aria-live="polite">{imageIndex + 1} / {images.length}</span>
+              <span className="project-gallery-controls">
+                <button type="button" className="project-carousel-arrow" onClick={() => onImageChange(-1)} aria-label={`Previous ${project.title} screenshot`}><FiChevronLeft size={20} aria-hidden="true" /></button>
+                <button type="button" className="project-carousel-arrow" onClick={() => onImageChange(1)} aria-label={`Next ${project.title} screenshot`}><FiChevronRight size={20} aria-hidden="true" /></button>
+              </span>
+            </>
+          )}
+        </figcaption>
+      </figure>
+    </div>
+  );
+}
+
+function ProjectResults({ project }) {
+  if (!project.metrics?.length && !project.result) return null;
+
+  return (
+    <section className="project-detail-section project-results">
+      <h3>Results</h3>
+      {project.result && <p>{project.result}</p>}
+      {project.metrics?.length > 0 && (
+        <div className="project-metrics" aria-label="Project testing metrics">
+          <dl>
+            {project.metrics.map(({ value, label }) => (
+              <div key={label}><dt>{label}</dt><dd>{value}</dd></div>
             ))}
-          </div>
-        </>}
+          </dl>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function ProjectDetails({ project, images, imageIndex, onImageChange, onClose }) {
+  return (
+    <div className="project-detail-body">
+      <ProjectGallery project={project} images={images} imageIndex={imageIndex} onImageChange={onImageChange} />
+      <div className="project-detail-content">
+        <ProjectDetailHeader project={project} onClose={onClose} />
+        <div key={project.id} className="project-detail-scroll" role="region" aria-label={`${project.title} information`} tabIndex={0}>
+          {project.systemName && (
+            <section className="project-detail-section project-thesis-title">
+              <p className="project-thesis-label">Thesis title</p>
+              <h3>{project.systemName}</h3>
+            </section>
+          )}
+          {project.problem ? (
+            <section className="project-detail-section">
+              <h3>Problem</h3>
+              <p>{project.problem}</p>
+            </section>
+          ) : project.description && (
+            <section className="project-detail-section">
+              <h3>Overview</h3>
+              <p>{project.description}</p>
+            </section>
+          )}
+          {project.solution && (
+            <section className="project-detail-section">
+              <h3>Solution</h3>
+              <p>{project.solution}</p>
+            </section>
+          )}
+          <ProjectResults project={project} />
+          <section className="project-detail-section">
+            <h3>Technologies used</h3>
+            <ProjectTechnologies tech={project.tech} className="project-detail-technologies" />
+          </section>
+          {project.liveUrl && (
+            <div className="project-detail-footer">
+              <a className="project-detail-link" href={project.liveUrl} target="_blank" rel="noopener noreferrer">View live project <FiArrowUpRight size={18} aria-hidden="true" /></a>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -105,6 +144,10 @@ export default function Works() {
   const dialogRef = useRef(null);
   const openerRef = useRef(null);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [imageIndex, setImageIndex] = useState(0);
+  const images = selectedProject?.screenshots?.length
+    ? selectedProject.screenshots
+    : selectedProject?.image ? [{ image: selectedProject.image, alt: selectedProject.imageAlt }] : [];
 
   useLayoutEffect(() => {
     if (!selectedProject || !dialogRef.current) return undefined;
@@ -125,31 +168,43 @@ export default function Works() {
 
   const openProject = (project) => {
     openerRef.current = document.activeElement;
+    setImageIndex(0);
     setSelectedProject(project);
   };
+  const changeImage = (direction) => {
+    if (images.length < 2) return;
+    setImageIndex((current) => (current + direction + images.length) % images.length);
+  };
   const closeProject = () => dialogRef.current?.close();
+  const handleGalleryKeys = (event) => {
+    if (event.altKey || event.ctrlKey || event.metaKey || images.length < 2) return;
+    if (event.currentTarget === dialogRef.current && event.target !== dialogRef.current && !event.target.closest(".project-detail-media")) return;
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
+      changeImage(event.key === "ArrowLeft" ? -1 : 1);
+    }
+  };
   const handleDialogClose = () => {
     setSelectedProject(null);
     openerRef.current?.focus?.({ preventScroll: true });
     openerRef.current = null;
   };
-  const handleBackdropClick = (event) => {
-    const dialog = dialogRef.current;
+  const handleBackdropClick = (event, dialog) => {
     if (event.target !== dialog) return;
     const { left, right, top, bottom } = dialog.getBoundingClientRect();
-    if (event.clientX < left || event.clientX > right || event.clientY < top || event.clientY > bottom) closeProject();
+    if (event.clientX < left || event.clientX > right || event.clientY < top || event.clientY > bottom) dialog.close();
   };
 
   return (
     <section id="works" className="chapter-section works-section" aria-labelledby="works-heading">
       <div className="projects-container mx-auto">
         <div className="projects-heading-row">
-          <div className="chapter-heading reveal"><h2 id="works-heading" className="heading-title">My Projects</h2></div>
-          <p className="projects-intro reveal">A selection of web projects, from a foundation website to fan-made storefronts.</p>
+          <div className="chapter-heading"><h2 id="works-heading" className="heading-title">My Projects</h2></div>
+          <p className="projects-intro">Web and mobile projects, from a student services platform to storefronts.</p>
         </div>
         <div className="project-grid">
           {projects.map((project) => (
-            <article className="project-card reveal" key={project.id}>
+            <article className="project-card" key={project.id}>
               <ProjectCardContent project={project} onInfo={openProject} />
             </article>
           ))}
@@ -157,22 +212,17 @@ export default function Works() {
       </div>
       <dialog
         ref={dialogRef}
-        className="project-dialog"
+        className={`project-dialog${selectedProject?.private ? " project-dialog--thesis" : ""}`}
         tabIndex={-1}
         aria-labelledby="project-dialog-title"
-        aria-describedby="project-dialog-subtitle project-dialog-hint"
+        aria-describedby="project-dialog-subtitle"
         onClose={handleDialogClose}
-        onClick={handleBackdropClick}
+        onClick={(event) => handleBackdropClick(event, dialogRef.current)}
+        onKeyDown={handleGalleryKeys}
       >
         {selectedProject && (
           <div className="project-dialog-inner">
-            <header className="project-dialog-header">
-              <p className="project-dialog-eyebrow">Project details</p>
-              <h2 id="project-dialog-title" className="project-detail-title">{selectedProject.title}</h2>
-              <p id="project-dialog-subtitle" className="project-dialog-subtitle">{selectedProject.private ? "Private thesis project" : <>{selectedProject.kind} <span aria-hidden="true">·</span> {selectedProject.platform}</>}</p>
-              <p id="project-dialog-hint" className="sr-only">Press Escape or click outside this window to close.</p>
-            </header>
-            <ProjectDetails project={selectedProject} />
+            <ProjectDetails project={selectedProject} images={images} imageIndex={imageIndex} onImageChange={changeImage} onClose={closeProject} />
           </div>
         )}
       </dialog>

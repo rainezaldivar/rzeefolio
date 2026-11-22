@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion as Motion, useReducedMotion } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Kuhaku from "./components/Kuhaku";
@@ -8,7 +9,9 @@ import Certificates from "./components/Certificates";
 import Contact from "./components/Contact";
 import CustomCursor from "./components/CustomCursor";
 import SakuraPetals from "./components/SakuraPetals";
-import SakuraLogo from "./components/SakuraLogo";
+import BreezeBackdrop from "./components/BreezeBackdrop";
+import IntroPreloader from "./components/IntroPreloader";
+import useScrollReveals from "./hooks/useScrollReveals";
 
 // The sun and moon share one CSS orbit behind the portfolio content.
 function CelestialCycle() {
@@ -28,47 +31,11 @@ function CelestialCycle() {
 }
 
 export default function App() {
-  const [introPhase, setIntroPhase] = useState("loading");
-
-  useEffect(() => {
-    let cancelled = false;
-    let firstFrame;
-    let secondFrame;
-    let fallback;
-
-    // Wait for a painted page and its interface fonts, but never trap visitors
-    // if a font request stalls or the tab cannot paint yet.
-    const painted = new Promise((resolve) => {
-      firstFrame = requestAnimationFrame(() => {
-        secondFrame = requestAnimationFrame(resolve);
-      });
-    });
-    const fontsReady = document.fonts?.ready ?? Promise.resolve();
-    const timeout = new Promise((resolve) => {
-      fallback = window.setTimeout(resolve, 3000);
-    });
-
-    Promise.race([Promise.all([painted, fontsReady]), timeout])
-      .catch(() => {})
-      .then(() => {
-        if (cancelled) return;
-        window.clearTimeout(fallback);
-        setIntroPhase(window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "done" : "leaving");
-      });
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(fallback);
-      cancelAnimationFrame(firstFrame);
-      cancelAnimationFrame(secondFrame);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (introPhase !== "leaving") return;
-    const timeout = window.setTimeout(() => setIntroPhase("done"), 350);
-    return () => window.clearTimeout(timeout);
-  }, [introPhase]);
+  const [introDone, setIntroDone] = useState(() =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+  const reduceMotion = useReducedMotion();
+  useScrollReveals();
 
   useEffect(() => {
     // The sections mount after the browser's initial fragment lookup.
@@ -84,52 +51,19 @@ export default function App() {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  useEffect(() => {
-    const elements = document.querySelectorAll(".reveal");
-    if (!('IntersectionObserver' in window)) {
-      elements.forEach((element) => element.classList.add("is-visible"));
-      return;
-    }
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08 });
-    elements.forEach((element) => observer.observe(element));
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <>
-      {introPhase !== "done" && (
-        <div
-          className={`intro-loader${introPhase === "leaving" ? " is-leaving" : ""}`}
-          role="status"
-          aria-label="Opening Raine Zaldivar's portfolio"
-          aria-hidden={introPhase === "leaving"}
-          onTransitionEnd={(event) => {
-            if (event.target === event.currentTarget && event.propertyName === "opacity") {
-              setIntroPhase("done");
-            }
-          }}
-        >
-          <div className="intro-loader-content" aria-hidden="true">
-            <div className="intro-loader-mark">
-              <span className="intro-loader-petal intro-loader-petal-left" />
-              <SakuraLogo />
-              <span className="intro-loader-petal intro-loader-petal-right" />
-            </div>
-            <p className="intro-loader-name">Raine Zaldivar</p>
-            <span className="intro-loader-label">Portfolio</span>
-            <span className="intro-loader-rule" />
-          </div>
-        </div>
-      )}
-      <div className="site-shell" inert={introPhase !== "done"} aria-busy={introPhase !== "done"}>
+      {!introDone && <IntroPreloader onComplete={setIntroDone} />}
+      <Motion.div
+        className="site-shell"
+        inert={!introDone}
+        aria-busy={!introDone}
+        initial={false}
+        animate={{ opacity: introDone ? 1 : 0 }}
+        transition={{ duration: introDone && !reduceMotion ? 0.55 : 0, ease: [0.22, 1, 0.36, 1] }}
+      >
         <CelestialCycle />
+        <BreezeBackdrop />
         <SakuraPetals />
         <a className="skip-link" href="#main-content">Skip to main content</a>
         <Navbar />
@@ -141,8 +75,8 @@ export default function App() {
           <Kuhaku />
         </main>
         <Contact />
-      </div>
-      {introPhase === "done" && <CustomCursor />}
+      </Motion.div>
+      {introDone && <CustomCursor />}
     </>
   );
 }
